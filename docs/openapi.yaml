@@ -1,0 +1,367 @@
+openapi: 3.0.0
+info:
+  title: Deliv API (MVP)
+  version: '1.0'
+  description: API dokumentasi untuk Deliv MVP — untuk integrasi Flutter
+servers:
+  - url: /api
+paths:
+  /register:
+    post:
+      summary: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /login:
+    post:
+      summary: Login (email or phone)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /logout:
+    post:
+      summary: Logout
+      security:
+        - bearerAuth: []
+      responses:
+        '200': { description: 'Logged out' }
+
+  /customer/cart/add:
+    post:
+      summary: Add product to cart
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id: { type: integer }
+                qty: { type: integer }
+      responses:
+        '200': { description: 'Added to cart' }
+
+  /customer/checkout:
+    post:
+      summary: Checkout cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '200':
+          description: Checkout result (success/pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+        '422': { description: 'Validation error' }
+
+  /customer/device-tokens:
+    post:
+      summary: Register device token for FCM
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+      responses:
+        '200': { description: 'Token registered' }
+
+  /products:
+    get:
+      summary: Public list products (no auth)
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /categories:
+    get:
+      summary: Public list categories (no auth)
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+  /customer/products:
+    get:
+      summary: List products (customer - auth)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /customer/mitras:
+    get:
+      summary: List mitras
+      responses:
+        '200':
+          description: List of mitras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mitra'
+
+  /customer/orders:
+    get:
+      summary: Customer orders
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /driver/online:
+    post:
+      summary: Set driver online/offline and optionally location
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_online: { type: boolean }
+                lat: { type: number }
+                lng: { type: number }
+      responses:
+        '200': { description: 'Status updated' }
+
+  /driver/location:
+    post:
+      summary: Driver reports location (lightweight)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverLocationRequest'
+      responses:
+        '200': { description: 'Location reported' }
+
+  /driver/orders:
+    get:
+      summary: Driver assigned orders/routes
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Orders for driver
+
+  /driver/order/{id}/accept:
+    post:
+      summary: Driver accepts a route
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: integer }
+      responses:
+        '200': { description: 'Accepted' }
+
+  /driver/order/{id}/complete:
+    post:
+      summary: Driver completes a route
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: integer }
+      responses:
+        '200': { description: 'Completed and payouts processed' }
+
+  /mitra/couriers:
+    get:
+      summary: Mitra list own couriers (API)
+      security:
+        - bearerAuth: []
+      responses:
+        '200': { description: 'List couriers' }
+    post:
+      summary: Mitra create courier
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                phone: { type: string }
+                vehicle: { type: string }
+      responses:
+        '200': { description: 'Courier created' }
+
+  /admin/settings:
+    get:
+      summary: Get admin settings
+      security:
+        - bearerAuth: []
+      responses:
+        '200': { description: 'Settings', 'content': { 'application/json': { 'schema': { '$ref': '#/components/schemas/Settings' } } } }
+    patch:
+      summary: Update admin settings
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Settings'
+      responses:
+        '200': { description: 'Updated' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        name: { type: string }
+        email: { type: string }
+        phone: { type: string }
+        password: { type: string }
+    LoginRequest:
+      type: object
+      properties:
+        email: { type: string }
+        phone: { type: string }
+        password: { type: string }
+      required: [password]
+    AuthResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+        data:
+          type: object
+          properties:
+            user: { type: object }
+            token: { type: string }
+    Product:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        price: { type: number }
+        mitra_id: { type: integer }
+    Mitra:
+      type: object
+      properties:
+        id: { type: integer }
+        user_id: { type: integer }
+        lat: { type: number }
+        lng: { type: number }
+        delivery_type: { type: string }
+    CheckoutRequest:
+      type: object
+      properties:
+        lat: { type: number }
+        lng: { type: number }
+        address: { type: string }
+        note: { type: string }
+        payment_method: { type: string }
+        delivery_option: { type: string }
+    CheckoutResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+        data: { type: object }
+    DriverLocationRequest:
+      type: object
+      properties:
+        lat: { type: number }
+        lng: { type: number }
+        speed: { type: number }
+        heading: { type: number }
+    Order:
+      type: object
+      properties:
+        id: { type: integer }
+        customer_id: { type: integer }
+        total_food: { type: number }
+        delivery_fee: { type: number }
+        grand_total: { type: number }
+    Category:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+    Settings:
+      type: object
+      properties:
+        vendor_commission_percent: { type: number }
+        admin_delivery_cut: { type: number }
+        courier_share_percent: { type: number }
