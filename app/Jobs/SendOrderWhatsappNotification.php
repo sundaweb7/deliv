@@ -51,7 +51,15 @@ class SendOrderWhatsappNotification implements ShouldQueue
                 // normalize phone before sending
                 $custPhone = \App\Services\PhoneHelper::normalizeIndoPhone($custPhone);
                 $message = "Pesanan Anda #{$order->id}\nTotal: Rp " . number_format($order->grand_total, 0, ',', '.') . "\nItems:\n{$itemsTextStr}\nAlamat: " . ($order->delivery_address ?? '') . "\nStatus: {$order->status}";
-                try { $wa->sendText($custPhone, $message); } catch (\Throwable $e) { Log::error('WA customer send error: ' . $e->getMessage()); }
+                // create log entry
+                $log = \App\Models\WhatsappLog::create(['order_id' => $order->id, 'target' => $custPhone, 'message' => $message, 'provider' => $settings->wa_provider]);
+                try {
+                    $res = $wa->sendTextRaw($custPhone, $message);
+                    $log->update(['success' => $res['success'] ?? false, 'response' => isset($res['body']) ? (is_string($res['body']) ? $res['body'] : json_encode($res['body'])) : json_encode($res), 'attempts' => $log->attempts + 1]);
+                } catch (\Throwable $e) {
+                    Log::error('WA customer send error: ' . $e->getMessage());
+                    $log->update(['success' => false, 'response' => $e->getMessage(), 'attempts' => $log->attempts + 1]);
+                }
             }
         }
 
@@ -74,7 +82,15 @@ class SendOrderWhatsappNotification implements ShouldQueue
                 $mitraItemsStr = implode("\n", $mitraItems);
 
                 $msg = "Pesanan baru untuk Mitra #{$order->id}\nItems:\n{$mitraItemsStr}\nSubtotal: Rp " . number_format($ov->subtotal_food, 0, ',', '.') . "\nAlamat: " . ($order->delivery_address ?? '') . "\nStatus: {$ov->status}";
-                try { $wa->sendText($mitraPhone, $msg); } catch (\Throwable $e) { Log::error('WA mitra send error: ' . $e->getMessage()); }
+                // create log entry
+                $log = \App\Models\WhatsappLog::create(['order_id' => $order->id, 'target' => $mitraPhone, 'message' => $msg, 'provider' => $settings->wa_provider]);
+                try {
+                    $res = $wa->sendTextRaw($mitraPhone, $msg);
+                    $log->update(['success' => $res['success'] ?? false, 'response' => isset($res['body']) ? (is_string($res['body']) ? $res['body'] : json_encode($res['body'])) : json_encode($res), 'attempts' => $log->attempts + 1]);
+                } catch (\Throwable $e) {
+                    Log::error('WA mitra send error: ' . $e->getMessage());
+                    $log->update(['success' => false, 'response' => $e->getMessage(), 'attempts' => $log->attempts + 1]);
+                }
             }
         }
     }

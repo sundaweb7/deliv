@@ -12,5 +12,6 @@ class AdminMenuTest extends TestCase
         // Render admin layout view directly to avoid DB queries in controllers
         $html = view('admin.layout')->render();
         $this->assertStringContainsString('Slides', $html);
+        $this->assertStringContainsString('WA Logs', $html);
     }
 }

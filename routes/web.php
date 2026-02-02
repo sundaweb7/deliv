@@ -90,6 +90,11 @@ Route::delete('/admin/featured-products/{featured}', [\App\Http\Controllers\Admi
 // Settings
 Route::get('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'edit'])->name('admin.settings.edit');
 Route::post('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'update'])->name('admin.settings.update');
+
+// WhatsApp logs and resend
+Route::get('/admin/wa-logs', [\App\Http\Controllers\AdminUI\WhatsappLogController::class, 'index'])->name('admin.wa_logs.index');
+Route::get('/admin/orders/{order}/wa-logs', [\App\Http\Controllers\AdminUI\WhatsappLogController::class, 'index'])->name('admin.orders.wa_logs');
+Route::post('/admin/wa-logs/{log}/resend', [\App\Http\Controllers\AdminUI\WhatsappLogController::class, 'resend'])->name('admin.wa_logs.resend');
 // WA test endpoints
 Route::post('/admin/settings/test-wa-connection', [\App\Http\Controllers\AdminUI\SettingsController::class, 'testWaConnection'])->name('admin.settings.testWaConnection');
 Route::post('/admin/settings/send-test-wa', [\App\Http\Controllers\AdminUI\SettingsController::class, 'sendTestWaMessage'])->name('admin.settings.sendTestWa');

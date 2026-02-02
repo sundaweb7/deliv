@@ -18,6 +18,7 @@
       <a href="{{ route('admin.slides.index') }}">Slides</a>
       <a href="{{ route('admin.vouchers.index') }}">Vouchers</a>
       <a href="{{ route('admin.notifications.index') }}">Notifications</a>
+      <a href="{{ route('admin.wa_logs.index') }}">WA Logs @php $failed = \Illuminate\Support\Facades\Schema::hasTable('whatsapp_logs') ? \App\Models\WhatsappLog::where('success',0)->count() : 0; @endphp @if($failed>0) <span style="color:red">({{ $failed }})</span>@endif</a>
       <a href="{{ route('admin.reports.finance') }}">Reports</a>
       <a href="{{ route('admin.settings.edit') }}">Settings</a>
       <a href="{{ route('admin.logout') }}">Logout</a>

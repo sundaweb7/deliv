@@ -14,6 +14,7 @@
   <td>{{ $o['payment_method'] ?? '-' }} / {{ $o['payment_status'] ?? '-' }}</td>
   <td>{{ $o['status'] }}</td>
   <td>
+    <a href="{{ route('admin.orders.wa_logs', $o['id']) }}">WA Logs</a>
     @if($o['payment_method'] === 'bank_transfer' && $o['payment_status'] !== 'paid')
       <form method="POST" action="{{ route('admin.orders.markPaid', $o['id']) }}">@csrf<button type="submit">Mark Paid</button></form>
     @endif
