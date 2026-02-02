@@ -80,6 +80,10 @@ Admin banks management (role:admin)
 - GET /api/mitra/orders (role:mitra)
   - Response: list order_vendor for mitra
 
+- GET /api/mitra/summary (role:mitra)
+  - Description: Lightweight summary intended for Mitra dashboard polling. Returns counts for number of products, delivered sales and wallet transactions.
+  - Response: { success: true, data: { products_count: int, sales_count: int, transactions_count: int, updated_at: ISO8601 string } }
+
 - POST /api/mitra/order/{id}/status (role:mitra)
   - Body: { status }
 

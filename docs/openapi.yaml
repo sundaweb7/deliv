@@ -258,6 +258,24 @@ paths:
       responses:
         '200': { description: 'Courier created' }
 
+  /mitra/summary:
+    get:
+      summary: Mitra summary (lightweight counts for dashboard)
+      description: Returns products_count, sales_count and transactions_count for the authenticated mitra user. Intended for polling by Mitra mobile apps.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Mitra summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    $ref: '#/components/schemas/MitraSummary'
+
   /admin/settings:
     get:
       summary: Get admin settings
@@ -365,3 +383,10 @@ components:
         vendor_commission_percent: { type: number }
         admin_delivery_cut: { type: number }
         courier_share_percent: { type: number }
+    MitraSummary:
+      type: object
+      properties:
+        products_count: { type: integer }
+        sales_count: { type: integer }
+        transactions_count: { type: integer }
+        updated_at: { type: string, format: date-time }

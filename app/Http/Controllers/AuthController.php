@@ -60,6 +60,18 @@ class AuthController extends Controller
         $user = $request->user();
         if (!$user) return response()->json(['success' => false, 'message' => 'Unauthorized'],401);
         $user->load('mitra');
+
+        // Attach mitra stats if mitra exists
+        if ($user->mitra) {
+            $mitra = $user->mitra;
+            $mitra->products_count = $mitra->products()->count();
+            $mitra->sales_count = \App\Models\OrderVendor::where('mitra_id', $mitra->id)->where('status', 'delivered')->count();
+            $mitra->transactions_count = \App\Models\Transaction::whereHas('wallet', function($q) use ($user) { $q->where('user_id', $user->id); })->count();
+            $user->mitra = $mitra;
+        }
+
+
+
         return response()->json(['success' => true, 'message' => 'User', 'data' => $user]);
     }
 }

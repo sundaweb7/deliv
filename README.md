@@ -54,6 +54,14 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+---
+
+## Realtime / WebSocket
+
+Note: WebSocket broadcasting support (Pusher / laravel-websockets) has been temporarily disabled in this repo to keep the codebase lean. The application currently uses a lightweight polling endpoint for Mitra summary updates (`GET /api/mitra/summary`).
+
+If you want to re-enable real-time broadcasts later, re-add `beyondcode/laravel-websockets`, publish its config, set the proper `PUSHER_*` env vars and restore the event broadcasting callers.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

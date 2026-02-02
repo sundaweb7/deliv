@@ -45,6 +45,10 @@ Route::get('/debug/notifications', function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // General device token endpoints (allow any authenticated user to register device token)
+    Route::post('/device-tokens', [\App\Http\Controllers\Customer\DeviceTokenController::class, 'store']);
+    Route::delete('/device-tokens', [\App\Http\Controllers\Customer\DeviceTokenController::class, 'destroy']);
+
     // current authenticated user info
     Route::get('/me', [AuthController::class, 'me']);
 
@@ -87,6 +91,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/shippings/{id}', [\App\Http\Controllers\Mitra\ShippingController::class, 'show']);
         Route::put('/shippings/{id}', [\App\Http\Controllers\Mitra\ShippingController::class, 'update']);
         Route::delete('/shippings/{id}', [\App\Http\Controllers\Mitra\ShippingController::class, 'destroy']);
+
+        // profile update for mitra (API)
+        Route::put('/profile', [\App\Http\Controllers\Mitra\ProfileApiController::class, 'update']);
+
+        // lightweight summary endpoint for mitra clients (counts only)
+        Route::get('/summary', [\App\Http\Controllers\Mitra\SummaryController::class, 'summary']);
 
         // allow mitra to register device tokens for push notifications (same controller as customer)
         Route::post('/device-tokens', [\App\Http\Controllers\Customer\DeviceTokenController::class, 'store']);

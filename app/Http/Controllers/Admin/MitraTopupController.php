@@ -23,12 +23,14 @@ class MitraTopupController extends Controller
         if ($topup->status !== 'pending') return response()->json(['success'=>false,'message'=>'Topup not pending'], 400);
 
         $walletSvc = new WalletService();
-        // credit mitra user wallet with type 'topup'
-        $walletSvc->credit($topup->user_id, (float)$topup->amount, 'Topup', 'topup');
+        // credit mitra user wallet with type 'topup' and broadcast transaction
+        $tx = $walletSvc->credit($topup->user_id, (float)$topup->amount, 'Topup', 'topup');
 
         $topup->status = 'approved';
         $topup->admin_id = $request->user()->id;
         $topup->save();
+
+
 
         return response()->json(['success'=>true,'message'=>'Topup approved','data'=>$topup]);
     }
