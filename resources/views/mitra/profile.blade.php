@@ -30,6 +30,14 @@
                         <img src="{{ asset('storage/mitra-photos/' . $mitra->profile_photo) }}" style="height:80px;margin-top:6px;" />
                     @endif
                 </div>
+
+                <div class="mb-3">
+                    <label>Store Photo</label>
+                    <input type="file" name="store_photo" class="form-control">
+                    @if($mitra->store_photo)
+                        <img src="{{ asset('storage/mitra-store-photos/' . $mitra->store_photo) }}" style="height:80px;margin-top:6px;" />
+                    @endif
+                </div>
             </div>
 
             <div class="col-md-6">
@@ -40,6 +48,10 @@
                 <div class="mb-3">
                     <label>WA Number</label>
                     <input type="text" name="wa_number" class="form-control" value="{{ old('wa_number', $mitra->wa_number) }}">
+                </div>
+                <div class="mb-3">
+                    <label>Alamat</label>
+                    <textarea name="address" class="form-control">{{ old('address', $mitra->address) }}</textarea>
                 </div>
                 <div class="mb-3">
                     <label>Address: Desa</label>

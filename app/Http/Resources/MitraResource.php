@@ -33,6 +33,8 @@ class MitraResource extends JsonResource
                 'province' => $this->address_province,
             ],
             'profile_photo' => $this->profile_photo,
+            'store_photo' => $this->store_photo,
+            'address_text' => $this->address,
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

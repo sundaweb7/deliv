@@ -40,7 +40,9 @@ class MitraRequest extends FormRequest
             'address_kecamatan' => 'nullable|string|max:255',
             'address_regency' => 'nullable|string|max:255',
             'address_province' => 'nullable|string|max:255',
-            'profile_photo' => 'nullable|string'
+            'profile_photo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120',
+            'address' => 'nullable|string|max:1000',
+            'store_photo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120' 
         ];
 
         // On create also require name and email

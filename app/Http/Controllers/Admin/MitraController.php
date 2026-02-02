@@ -51,6 +51,8 @@ class MitraController extends Controller
             'address_regency' => $data['address_regency'] ?? null,
             'address_province' => $data['address_province'] ?? null,
             'profile_photo' => $data['profile_photo'] ?? null,
+            'store_photo' => $data['store_photo'] ?? null,
+            'address' => $data['address'] ?? null,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Mitra created', 'data' => new MitraResource($mitra->load('user'))]);
@@ -88,6 +90,8 @@ class MitraController extends Controller
             'address_regency' => $data['address_regency'] ?? $mitra->address_regency,
             'address_province' => $data['address_province'] ?? $mitra->address_province,
             'profile_photo' => $data['profile_photo'] ?? $mitra->profile_photo,
+            'store_photo' => $data['store_photo'] ?? $mitra->store_photo,
+            'address' => $data['address'] ?? $mitra->address,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Mitra updated', 'data' => new MitraResource($mitra->fresh('user'))]);
