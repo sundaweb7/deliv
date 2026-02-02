@@ -58,7 +58,7 @@
 
   document.getElementById('wa-test-connection-btn').addEventListener('click', function(e) {
     const btn = this; btn.disabled = true; showWaResult('Checking...', true);
-    fetch('{{ route('admin.settings.testWaConnection') }}', {
+    fetch('/admin/settings/test-wa-connection', {
       method: 'POST',
       credentials: 'same-origin',
       headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
@@ -76,7 +76,7 @@
     const btn = this; btn.disabled = true; showWaResult('Sending...', true);
     const phone = document.getElementById('wa-test-phone').value;
     const message = document.getElementById('wa-test-message').value;
-    fetch('{{ route('admin.settings.sendTestWa') }}', {
+    fetch('/admin/settings/send-test-wa', {
       method: 'POST',
       credentials: 'same-origin',
       headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
