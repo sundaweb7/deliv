@@ -41,4 +41,28 @@ class SettingsController extends AdminBaseController
         $settings->update($data);
         return redirect()->route('admin.settings.edit')->with('success','Settings updated');
     }
+
+    /**
+     * AJAX: test WA API credentials connectivity (ping)
+     */
+    public function testWaConnection(Request $request)
+    {
+        if ($redirect = $this->ensureAdmin()) return $redirect;
+        $wa = new \App\Services\WhatsappService();
+        $res = $wa->testConnection();
+        return response()->json($res);
+    }
+
+    /**
+     * AJAX: send a test WA message to specified phone
+     */
+    public function sendTestWaMessage(Request $request)
+    {
+        if ($redirect = $this->ensureAdmin()) return $redirect;
+        $data = $request->validate(['test_phone' => 'required|string', 'test_message' => 'nullable|string']);
+        $to = \App\Services\PhoneHelper::normalizeIndoPhone($data['test_phone']);
+        $wa = new \App\Services\WhatsappService();
+        $res = $wa->sendTextRaw($to, $data['test_message'] ?? 'Test message from Deliv (admin)');
+        return response()->json($res);
+    }
 }

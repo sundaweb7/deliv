@@ -90,6 +90,9 @@ Route::delete('/admin/featured-products/{featured}', [\App\Http\Controllers\Admi
 // Settings
 Route::get('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'edit'])->name('admin.settings.edit');
 Route::post('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'update'])->name('admin.settings.update');
+// WA test endpoints
+Route::post('/admin/settings/test-wa-connection', [\App\Http\Controllers\AdminUI\SettingsController::class, 'testWaConnection'])->name('admin.settings.testWaConnection');
+Route::post('/admin/settings/send-test-wa', [\App\Http\Controllers\AdminUI\SettingsController::class, 'sendTestWaMessage'])->name('admin.settings.sendTestWa');
 
 // Reports UI
 Route::get('/admin/reports/finance', [\App\Http\Controllers\AdminUI\ReportsController::class, 'finance'])->name('admin.reports.finance');

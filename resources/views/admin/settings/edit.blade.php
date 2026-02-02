@@ -37,4 +37,51 @@
 
   <button type="submit">Update</button>
 </form>
+
+<hr>
+<h4>Test WhatsApp connection / send test message</h4>
+<label>Test phone (use local 08/62/+62 format)</label><br>
+<input id="wa-test-phone" type="text" placeholder="081234..." style="width:300px"><br>
+<label>Message</label><br>
+<textarea id="wa-test-message" rows="3" style="width:400px">Tes koneksi WhatsApp dari Deliv (admin test)</textarea><br>
+<button id="wa-test-connection-btn" type="button">Test API Key (ping)</button>
+<button id="wa-send-test-btn" type="button">Send test message</button>
+<div id="wa-test-result" style="margin-top:10px; font-weight:bold;"></div>
+
+<script>
+  const csrfToken = '{{ csrf_token() }}';
+  function showWaResult(msg, ok) {
+    const el = document.getElementById('wa-test-result');
+    el.innerText = (typeof msg === 'string') ? msg : JSON.stringify(msg);
+    el.style.color = ok ? 'green' : 'red';
+  }
+
+  document.getElementById('wa-test-connection-btn').addEventListener('click', function(e) {
+    const btn = this; btn.disabled = true; showWaResult('Checking...', true);
+    fetch('{{ route('admin.settings.testWaConnection') }}', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
+      body: JSON.stringify({})
+    }).then(r => r.json()).then(data => {
+      showWaResult(data.message || data, data.ok || data.success === true);
+      btn.disabled = false;
+    }).catch(err => { showWaResult(err.message || err, false); btn.disabled = false; });
+  });
+
+  document.getElementById('wa-send-test-btn').addEventListener('click', function(e) {
+    const btn = this; btn.disabled = true; showWaResult('Sending...', true);
+    const phone = document.getElementById('wa-test-phone').value;
+    const message = document.getElementById('wa-test-message').value;
+    fetch('{{ route('admin.settings.sendTestWa') }}', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
+      body: JSON.stringify({test_phone: phone, test_message: message})
+    }).then(r => r.json()).then(data => {
+      if (data.success === true) showWaResult('Sent OK (HTTP ' + (data.status ?? '') + ') - ' + (data.body ?? ''), true);
+      else showWaResult(data.error || JSON.stringify(data), false);
+      btn.disabled = false;
+    }).catch(err => { showWaResult(err.message || err, false); btn.disabled = false; });
+  });
+</script>
+
 @endsection
