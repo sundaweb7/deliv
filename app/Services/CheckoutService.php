@@ -45,13 +45,19 @@ class CheckoutService
             throw new \Exception('Cart kosong');
         }
 
-        // Group items by mitra
+        // Group items by mitra and validate mitra status (open)
         $grouped = [];
         foreach ($this->cart->items as $item) {
             $mitra = $item->product->mitra;
             if (!$mitra) {
                 throw new \Exception('Mitra tidak ditemukan untuk product: ' . $item->product->id);
             }
+
+            if (!$mitra->is_open) {
+                // fail early if mitra is closed
+                throw new \Exception('Toko ' . ($mitra->business_name ?? $mitra->id) . ' sedang tutup');
+            }
+
             $grouped[$mitra->id][] = $item;
         }
 

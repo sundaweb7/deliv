@@ -21,6 +21,13 @@ class CartController extends Controller
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
         $product = Product::findOrFail($request->product_id);
+
+        // Prevent adding product if mitra is closed
+        $mitra = $product->mitra;
+        if ($mitra && !$mitra->is_open) {
+            return response()->json(['success' => false, 'message' => 'Toko tutup'], 422);
+        }
+
         $item = $cart->items()->where('product_id', $product->id)->first();
         if ($item) {
             $item->qty += $request->qty;
