@@ -20,10 +20,13 @@ class OrderController extends Controller
 
     public function products(Request $request)
     {
-        // allow optional category filter
+        // allow optional category or mitra filter
         $query = Product::with(['mitra','category'])->where('is_active', true);
         if ($request->has('category')) {
             $query->whereHas('category', function($q) use ($request){ $q->where('slug', $request->category); });
+        }
+        if ($request->has('mitra')) {
+            $query->where('mitra_id', $request->mitra);
         }
         return response()->json(['success' => true, 'message' => 'List products', 'data' => $query->get()]);
     }
