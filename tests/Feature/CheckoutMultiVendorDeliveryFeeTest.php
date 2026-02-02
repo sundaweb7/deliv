@@ -31,13 +31,13 @@ class CheckoutMultiVendorDeliveryFeeTest extends TestCase
 
         // create mitras with different distances
         $mitraUser1 = User::factory()->create(['role' => 'mitra']);
-        $mitra1 = Mitra::create(['user_id' => $mitraUser1->id, 'lat' => 0.01, 'lng' => 0.0, 'delivery_type' => 'app_driver']);
+        $mitra1 = Mitra::create(['user_id' => $mitraUser1->id, 'lat' => 0.01, 'lng' => 0.0, 'delivery_type' => 'anyerdeliv']);
 
         $mitraUser2 = User::factory()->create(['role' => 'mitra']);
-        $mitra2 = Mitra::create(['user_id' => $mitraUser2->id, 'lat' => 0.02, 'lng' => 0.0, 'delivery_type' => 'app_driver']);
+        $mitra2 = Mitra::create(['user_id' => $mitraUser2->id, 'lat' => 0.02, 'lng' => 0.0, 'delivery_type' => 'anyerdeliv']);
 
         $mitraUser3 = User::factory()->create(['role' => 'mitra']);
-        $mitra3 = Mitra::create(['user_id' => $mitraUser3->id, 'lat' => 0.05, 'lng' => 0.0, 'delivery_type' => 'app_driver']);
+        $mitra3 = Mitra::create(['user_id' => $mitraUser3->id, 'lat' => 0.05, 'lng' => 0.0, 'delivery_type' => 'anyerdeliv']);
 
         // products
         $p1 = Product::create(['mitra_id' => $mitra1->id, 'name' => 'A', 'price' => 10000, 'stock' => 10]);

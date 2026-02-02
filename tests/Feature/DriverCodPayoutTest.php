@@ -30,7 +30,7 @@ class DriverCodPayoutTest extends TestCase
         $mitraUser = User::factory()->create(['role' => 'mitra']);
         // give mitra enough balance to cover commission (10% of 20000 = 2000)
         Wallet::create(['user_id' => $mitraUser->id, 'balance' => 2000]);
-        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'app_driver']);
+        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'anyerdeliv']);
 
         // create driver
         $driverUser = User::factory()->create(['role' => 'driver']);
@@ -45,7 +45,7 @@ class DriverCodPayoutTest extends TestCase
 
         $order = Order::create(['customer_id' => $customer->id, 'order_type' => 'delivery', 'status' => 'pending', 'payment_method' => 'cod', 'payment_status' => 'pending', 'total_food'=>20000,'delivery_fee'=>5000,'admin_profit'=>0,'grand_total'=>25000]);
 
-        $ov = OrderVendor::create(['order_id' => $order->id, 'mitra_id' => $mitra->id, 'subtotal_food' => 20000, 'delivery_type' => 'app_driver', 'status' => 'on_delivery']);
+        $ov = OrderVendor::create(['order_id' => $order->id, 'mitra_id' => $mitra->id, 'subtotal_food' => 20000, 'delivery_type' => 'anyerdeliv', 'status' => 'on_delivery']);
 
         // create driver route
         \App\Models\DriverRoute::create(['driver_id'=>$driver->id,'order_vendor_id'=>$ov->id,'pickup_sequence'=>0,'pickup_status'=>'accepted']);

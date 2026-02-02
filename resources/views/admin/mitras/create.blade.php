@@ -14,7 +14,8 @@
   <label>Password (optional)</label><br>
   <input name="password" type="password"><br>
   <label>Delivery Type</label><br>
-  <select name="delivery_type"><option value="app_driver">App Driver</option><option value="delivery_kurir">Delivery Kurir</option></select><br>
+  <input type="hidden" name="delivery_type" value="anyerdeliv">
+  <span>AnyerDeliv (platform courier)</span><br>
   <button type="submit">Create</button>
 </form>
 @endsection

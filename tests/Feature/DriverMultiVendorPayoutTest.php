@@ -29,7 +29,7 @@ class DriverMultiVendorPayoutTest extends TestCase
             $mu = User::factory()->create(['role' => 'mitra']);
             // provide initial wallet balance so mitra can be charged commission on COD
             Wallet::create(['user_id' => $mu->id, 'balance' => 10000]);
-            $m = Mitra::create(['user_id' => $mu->id, 'lat' => 0.0+$i*0.01, 'lng' => 0.0, 'delivery_type' => 'app_driver']);
+            $m = Mitra::create(['user_id' => $mu->id, 'lat' => 0.0+$i*0.01, 'lng' => 0.0, 'delivery_type' => 'anyerdeliv']);
             $mitraUsers[] = $mu;
             $mitras[] = $m;
         }

@@ -66,18 +66,18 @@ class CheckoutService
             // ensure all mitras support admin driver
             foreach ($grouped as $mitraId => $items) {
                 $mitra = $items[0]->product->mitra;
-                if ($mitra->delivery_type !== 'app_driver') {
-                    throw new \Exception('Multi-mitra hanya diperbolehkan jika semua mitra menggunakan app_driver');
+                if ($mitra->delivery_type !== 'anyerdeliv') {
+                    throw new \Exception('Multi-mitra hanya diperbolehkan jika semua mitra menggunakan anyerdeliv');
                 }
             }
         } else {
             // single vendor
             $first = reset($grouped);
             $singleMitra = $first[0]->product->mitra;
-            if ($deliveryOption === 'admin' && $singleMitra->delivery_type !== 'app_driver') {
+            if ($deliveryOption === 'admin' && $singleMitra->delivery_type !== 'anyerdeliv') {
                 throw new \Exception('Mitra tidak mendukung kurir admin');
             }
-            if ($deliveryOption === 'mitra' && $singleMitra->delivery_type === 'app_driver') {
+            if ($deliveryOption === 'mitra' && $singleMitra->delivery_type === 'anyerdeliv') {
                 throw new \Exception('Mitra ini hanya mendukung kurir admin, tidak dapat menggunakan kurir mitra');
             }
             if ($deliveryOption === 'pickup' && count($grouped) > 1) {
@@ -139,8 +139,8 @@ class CheckoutService
                 }
 
                 // assign driver if needed (mock nearest online driver)
-                // Only assign driver when either admin courier is selected or when mitra supports app_driver and customer did not select pickup/mitra
-                if ((($deliveryOption === null) && $mitra->delivery_type === 'app_driver') || ($deliveryOption === 'admin')) {
+                // Only assign driver when either admin courier is selected or when mitra supports anyerdeliv and customer did not select pickup/mitra
+                if ((($deliveryOption === null) && $mitra->delivery_type === 'anyerdeliv') || ($deliveryOption === 'admin')) {
                     $driver = Driver::where('is_online', true)->first(); // mock: first online driver
                     if ($driver) {
                         DriverRoute::create([

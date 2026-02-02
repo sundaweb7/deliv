@@ -20,7 +20,7 @@ class CheckoutDeliveryOptionsTest extends TestCase
         Setting::create(['vendor_commission_percent' => 10, 'admin_delivery_cut' => 20]);
 
         $mitraUser = User::factory()->create(['role' => 'mitra']);
-        Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'app_driver']);
+        Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'anyerdeliv']);
         $product = Product::create(['mitra_id' => 1, 'name' => 'P', 'price' => 10000, 'stock' => 10]);
 
         $customer = User::factory()->create(['role' => 'customer']);
@@ -74,7 +74,7 @@ class CheckoutDeliveryOptionsTest extends TestCase
         // create two mitras that support app_driver
         for ($i=0;$i<2;$i++) {
             $mu = User::factory()->create(['role' => 'mitra']);
-            Mitra::create(['user_id' => $mu->id, 'delivery_type' => 'app_driver']);
+            Mitra::create(['user_id' => $mu->id, 'delivery_type' => 'anyerdeliv']);
             Product::create(['mitra_id' => $i+1, 'name' => 'P'.$i, 'price' => 10000, 'stock' => 10]);
         }
 

@@ -40,7 +40,7 @@ class MitraController extends Controller
 
         $mitra = Mitra::create([
             'user_id' => $user->id,
-            'delivery_type' => $data['delivery_type'] ?? 'app_driver',
+            'delivery_type' => $data['delivery_type'] ?? 'anyerdeliv',
             'lat' => $data['lat'] ?? null,
             'lng' => $data['lng'] ?? null,
             'is_active' => $data['is_active'] ?? true,

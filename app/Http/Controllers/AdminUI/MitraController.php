@@ -35,7 +35,7 @@ class MitraController extends AdminBaseController
         $user = User::create([
             'name' => $data['name'], 'email' => $data['email'], 'phone' => $data['phone'] ?? null, 'password' => \Illuminate\Support\Facades\Hash::make($data['password'] ?? 'password'), 'role' => 'mitra'
         ]);
-        $mitra = Mitra::create(['user_id' => $user->id, 'delivery_type' => $data['delivery_type'] ?? 'app_driver', 'lat' => $data['lat'] ?? null, 'lng' => $data['lng'] ?? null, 'is_active' => $data['is_active'] ?? true]);
+        $mitra = Mitra::create(['user_id' => $user->id, 'delivery_type' => $data['delivery_type'] ?? 'anyerdeliv', 'lat' => $data['lat'] ?? null, 'lng' => $data['lng'] ?? null, 'is_active' => $data['is_active'] ?? true]);
         return redirect()->route('admin.mitras.index')->with('success', 'Mitra created');
     }
 

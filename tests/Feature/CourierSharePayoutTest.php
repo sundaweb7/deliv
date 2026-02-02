@@ -62,7 +62,7 @@ class CourierSharePayoutTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin']); Wallet::create(['user_id' => $admin->id, 'balance' => 0]);
 
         $mitraUser = User::factory()->create(['role' => 'mitra']); Wallet::create(['user_id' => $mitraUser->id, 'balance' => 0]);
-        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'app_driver']);
+        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'anyerdeliv']);
 
         $driverUser = User::factory()->create(['role' => 'driver']); Wallet::create(['user_id' => $driverUser->id, 'balance' => 0]);
         $driver = \App\Models\Driver::create(['user_id' => $driverUser->id, 'is_online' => true]);

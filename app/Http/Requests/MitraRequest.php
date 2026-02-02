@@ -18,7 +18,7 @@ class MitraRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|email|unique:users,email,' . ($this->route('mitra') ?? 'NULL'),
             'phone' => 'nullable|string',
-            'delivery_type' => 'nullable|in:app_driver,delivery_kurir,gojek',
+            'delivery_type' => 'nullable|in:anyerdeliv',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
             'is_active' => 'nullable|boolean',

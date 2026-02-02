@@ -19,7 +19,7 @@ class CodMitraBalanceTest extends TestCase
 
         $mitraUser = User::factory()->create(['role' => 'mitra']);
         Wallet::create(['user_id' => $mitraUser->id, 'balance' => 0]);
-        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'app_driver']);
+        $mitra = Mitra::create(['user_id' => $mitraUser->id, 'delivery_type' => 'anyerdeliv']);
 
         $product = Product::create(['mitra_id' => $mitra->id, 'name' => 'Test', 'price' => 20000, 'stock' => 10]);
 

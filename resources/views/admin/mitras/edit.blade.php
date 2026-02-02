@@ -12,7 +12,8 @@
   <label>Phone</label><br>
   <input name="phone" value="{{ old('phone', $mitra->user->phone ?? '') }}"><br>
   <label>Delivery Type</label><br>
-  <select name="delivery_type"><option value="app_driver" {{ $mitra->delivery_type=='app_driver'?'selected':'' }}>App Driver</option><option value="delivery_kurir" {{ $mitra->delivery_type=='delivery_kurir'?'selected':'' }}>Delivery Kurir</option></select><br>
+  <input type="hidden" name="delivery_type" value="anyerdeliv">
+  <span>AnyerDeliv (platform courier)</span><br>
   <label>Active</label><br>
   <select name="is_active"><option value="1" {{ $mitra->is_active ? 'selected' : '' }}>Yes</option><option value="0" {{ !$mitra->is_active ? 'selected' : '' }}>No</option></select><br>
   <button type="submit">Update</button>

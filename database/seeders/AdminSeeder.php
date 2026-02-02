@@ -36,7 +36,7 @@ class AdminSeeder extends Seeder
             'role' => 'mitra'
         ]);
 
-        $mitra = Mitra::firstOrCreate(['user_id' => $mitraUser->id], ['delivery_type' => 'app_driver', 'lat' => -6.200000, 'lng' => 106.816666]);
+        $mitra = Mitra::firstOrCreate(['user_id' => $mitraUser->id], ['delivery_type' => 'anyerdeliv', 'lat' => -6.200000, 'lng' => 106.816666]);
         Wallet::firstOrCreate(['user_id' => $mitraUser->id], ['balance' => 0]);
 
         Product::firstOrCreate(['mitra_id' => $mitra->id, 'name' => 'Nasi Goreng'], ['price' => 20000, 'stock' => 20]);
