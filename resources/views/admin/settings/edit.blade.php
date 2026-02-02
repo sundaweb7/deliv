@@ -60,12 +60,16 @@
     const btn = this; btn.disabled = true; showWaResult('Checking...', true);
     fetch('{{ route('admin.settings.testWaConnection') }}', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
       body: JSON.stringify({})
-    }).then(r => r.json()).then(data => {
+    }).then(r => {
+      if (!r.ok) return r.text().then(t => { throw new Error(t || ('HTTP ' + r.status)); });
+      return r.json();
+    }).then(data => {
       showWaResult(data.message || data, data.ok || data.success === true);
       btn.disabled = false;
-    }).catch(err => { showWaResult(err.message || err, false); btn.disabled = false; });
+    }).catch(err => { showWaResult(err.message || JSON.stringify(err), false); btn.disabled = false; });
   });
 
   document.getElementById('wa-send-test-btn').addEventListener('click', function(e) {
@@ -74,13 +78,17 @@
     const message = document.getElementById('wa-test-message').value;
     fetch('{{ route('admin.settings.sendTestWa') }}', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
       body: JSON.stringify({test_phone: phone, test_message: message})
-    }).then(r => r.json()).then(data => {
+    }).then(r => {
+      if (!r.ok) return r.text().then(t => { throw new Error(t || ('HTTP ' + r.status)); });
+      return r.json();
+    }).then(data => {
       if (data.success === true) showWaResult('Sent OK (HTTP ' + (data.status ?? '') + ') - ' + (data.body ?? ''), true);
       else showWaResult(data.error || JSON.stringify(data), false);
       btn.disabled = false;
-    }).catch(err => { showWaResult(err.message || err, false); btn.disabled = false; });
+    }).catch(err => { showWaResult(err.message || JSON.stringify(err), false); btn.disabled = false; });
   });
 </script>
 
