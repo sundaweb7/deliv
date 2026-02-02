@@ -35,9 +35,20 @@ class DeviceTokenController extends Controller
     public function destroy(Request $request)
     {
         $request->validate(['token' => 'required|string']);
-        $token = DeviceToken::where('token', $request->token)->where('user_id', $request->user()->id)->first();
-        if ($token) $token->delete();
-
-        return response()->json(['success' => true, 'message' => 'Token removed']);
+        $user = $request->user();
+        \Log::info('DeviceTokenController: destroy called', ['token' => $request->token, 'user_id' => $user ? $user->id : null]);
+        try {
+            $token = DeviceToken::where('token', $request->token)->where('user_id', $user->id)->first();
+            if ($token) {
+                $token->delete();
+                \Log::info('DeviceTokenController: token deleted', ['token' => $request->token, 'user_id' => $user->id]);
+            } else {
+                \Log::info('DeviceTokenController: token not found for delete', ['token' => $request->token, 'user_id' => $user->id]);
+            }
+            return response()->json(['success' => true, 'message' => 'Token removed']);
+        } catch (\Exception $e) {
+            \Log::error('DeviceTokenController: destroy failed', ['message' => $e->getMessage(), 'token' => $request->token, 'user_id' => $user ? $user->id : null]);
+            return response()->json(['success' => false, 'message' => 'Failed to remove token'], 500);
+        }
     }
 }
