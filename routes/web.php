@@ -51,6 +51,10 @@ Route::delete('/admin/products/{product}', [\App\Http\Controllers\AdminUI\Produc
 
 // Users
 Route::get('/admin/users', [\App\Http\Controllers\AdminUI\UserController::class, 'index'])->name('admin.users.index');
+Route::get('/admin/users/create', [\App\Http\Controllers\AdminUI\UserController::class, 'create'])->name('admin.users.create');
+Route::post('/admin/users', [\App\Http\Controllers\AdminUI\UserController::class, 'store'])->name('admin.users.store');
+Route::get('/admin/users/{user}/edit', [\App\Http\Controllers\AdminUI\UserController::class, 'edit'])->name('admin.users.edit');
+Route::put('/admin/users/{user}', [\App\Http\Controllers\AdminUI\UserController::class, 'update'])->name('admin.users.update');
 Route::delete('/admin/users/{user}', [\App\Http\Controllers\AdminUI\UserController::class, 'destroy'])->name('admin.users.destroy');
 
 // Vouchers
