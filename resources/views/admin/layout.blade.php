@@ -15,6 +15,7 @@
       <a href="{{ route('admin.mitras.index') }}">Mitras</a>
       <a href="{{ route('admin.drivers.index') }}">Drivers</a>
       <a href="{{ route('admin.products.index') }}">Products</a>
+      <a href="{{ route('admin.categories.index') }}">Categories</a>
       <a href="{{ route('admin.slides.index') }}">Slides</a>
       <a href="{{ route('admin.vouchers.index') }}">Vouchers</a>
       <a href="{{ route('admin.notifications.index') }}">Notifications</a>

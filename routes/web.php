@@ -87,6 +87,14 @@ Route::get('/admin/featured-products/{featured}/edit', [\App\Http\Controllers\Ad
 Route::put('/admin/featured-products/{featured}', [\App\Http\Controllers\AdminUI\FeaturedProductController::class, 'update'])->name('admin.featured.update');
 Route::delete('/admin/featured-products/{featured}', [\App\Http\Controllers\AdminUI\FeaturedProductController::class, 'destroy'])->name('admin.featured.destroy');
 
+// Categories UI
+Route::get('/admin/categories', [\App\Http\Controllers\AdminUI\CategoryController::class, 'index'])->name('admin.categories.index');
+Route::get('/admin/categories/create', [\App\Http\Controllers\AdminUI\CategoryController::class, 'create'])->name('admin.categories.create');
+Route::post('/admin/categories', [\App\Http\Controllers\AdminUI\CategoryController::class, 'store'])->name('admin.categories.store');
+Route::get('/admin/categories/{category}/edit', [\App\Http\Controllers\AdminUI\CategoryController::class, 'edit'])->name('admin.categories.edit');
+Route::put('/admin/categories/{category}', [\App\Http\Controllers\AdminUI\CategoryController::class, 'update'])->name('admin.categories.update');
+Route::delete('/admin/categories/{category}', [\App\Http\Controllers\AdminUI\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
 // Settings
 Route::get('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'edit'])->name('admin.settings.edit');
 Route::post('/admin/settings', [\App\Http\Controllers\AdminUI\SettingsController::class, 'update'])->name('admin.settings.update');
