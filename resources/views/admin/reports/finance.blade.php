@@ -26,6 +26,51 @@
 </div>
 
 <div style="margin-top:12px">
+  <h3>Daily Orders</h3>
+  <table border="0" cellpadding="6" width="100%">
+    <thead><tr><th>Date</th><th>Orders</th><th>Revenue</th></tr></thead>
+    <tbody>
+      @foreach($data['daily'] ?? [] as $d)
+      <tr>
+        <td>{{ $d->date }}</td>
+        <td>{{ $d->orders }}</td>
+        <td>{{ number_format($d->revenue,0,',','.') }}</td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top:12px">
+  <h3>Pendapatan Per Mitra</h3>
+  <table border="0" cellpadding="6" width="100%">
+    <thead><tr><th>Mitra</th><th>Revenue</th><th>Delivery Fee</th></tr></thead>
+    <tbody>
+      @foreach($data['mitra_earnings'] ?? [] as $m)
+      <tr>
+        @php
+          $mitraObj = is_array($m) ? ($m['mitra'] ?? null) : ($m->mitra ?? null);
+          $mitraName = null;
+          if ($mitraObj) {
+            if (is_array($mitraObj)) $mitraName = $mitraObj['user']['name'] ?? ('Mitra #'.$m['mitra_id'] ?? $m->mitra_id ?? '');
+            else $mitraName = $mitraObj->user->name ?? ('Mitra #'.($m['mitra_id'] ?? $m->mitra_id ?? ''));
+          }
+          $revenue = is_array($m) ? ($m['revenue'] ?? 0) : ($m->revenue ?? 0);
+          $deliveryFee = is_array($m) ? ($m['delivery_fee'] ?? 0) : ($m->delivery_fee ?? 0);
+        @endphp
+        <td>{{ $mitraName ?? ('Mitra #'.(is_array($m) ? ($m['mitra_id'] ?? '') : ($m->mitra_id ?? ''))) }}</td>
+        <td>{{ number_format($revenue,0,',','.') }}</td>
+        <td>{{ number_format($deliveryFee ?? 0,0,',','.') }}</td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  @if(isset($data['mitra_earnings']))
+    {{ $data['mitra_earnings']->links() }}
+  @endif
+</div>
+
+<div style="margin-top:12px">
   <h3>Transactions Summary</h3>
   <ul>
     @foreach($data['transactions'] ?? [] as $t)
