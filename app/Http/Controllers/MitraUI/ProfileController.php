@@ -34,8 +34,14 @@ class ProfileController extends Controller
             'store_photo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120',
         ]);
 
+        // normalize phone and wa_number
+        $phone = $data['phone'] ?? null;
+        if ($phone) { $phone = \App\Services\PhoneHelper::normalizeIndoPhone($phone); }
+        $wa = $data['wa_number'] ?? null;
+        if ($wa) { $wa = \App\Services\PhoneHelper::normalizeIndoPhone($wa); }
+
         // update user
-        $user->update(array_filter([ 'name' => $data['name'] ?? null, 'email' => $data['email'] ?? null, 'phone' => $data['phone'] ?? null ]));
+        $user->update(array_filter([ 'name' => $data['name'] ?? null, 'email' => $data['email'] ?? null, 'phone' => $phone ?? null ]));
 
         // handle profile photo
         if ($request->hasFile('profile_photo')) {
@@ -55,7 +61,7 @@ class ProfileController extends Controller
 
         $user->mitra->update([
             'business_name' => $data['business_name'] ?? $user->mitra->business_name,
-            'wa_number' => $data['wa_number'] ?? $user->mitra->wa_number,
+            'wa_number' => $wa ?? $user->mitra->wa_number,
             'address' => $data['address'] ?? $user->mitra->address,
             'address_desa' => $data['address_desa'] ?? $user->mitra->address_desa,
             'address_kecamatan' => $data['address_kecamatan'] ?? $user->mitra->address_kecamatan,

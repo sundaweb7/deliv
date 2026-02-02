@@ -17,9 +17,23 @@ class AuthController extends Controller
         $data['password'] = Hash::make($data['password']);
         $data['role'] = $data['role'] ?? 'customer';
 
-        // ensure email can be null
+        // ensure email has placeholder if empty (DB requires NOT NULL)
         if (empty($data['email'])) {
-            $data['email'] = null;
+            if (!empty($data['phone'])) {
+                // normalize phone and derive email from digits
+                $data['phone'] = \App\Services\PhoneHelper::normalizeIndoPhone($data['phone']);
+                $pdigits = preg_replace('/\\D+/', '', $data['phone']);
+                $data['email'] = $pdigits . '@no-reply.local';
+            } else {
+                $data['email'] = uniqid('user_') . '@no-reply.local';
+            }
+        } else {
+            $data['email'] = trim($data['email']);
+        }
+
+        // normalize phone (08... => +628...) if not already normalized above
+        if (!empty($data['phone'])) {
+            $data['phone'] = \App\Services\PhoneHelper::normalizeIndoPhone($data['phone']);
         }
 
         $user = User::create($data);
@@ -34,8 +48,15 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $user = null;
+
         if (!empty($data['phone'])) {
-            $user = User::where('phone', $data['phone'])->first();
+            $rawPhone = $data['phone'];
+            // normalize and prepare candidate variants to match legacy or normalized storage
+            $normalized = \App\Services\PhoneHelper::normalizeIndoPhone($rawPhone);
+            $digits = preg_replace('/\D+/', '', $rawPhone);
+            $with62 = '62' . ltrim($digits, '0');
+            $candidates = array_filter([$normalized, $rawPhone, $digits, $with62]);
+            $user = User::whereIn('phone', $candidates)->first();
         } elseif (!empty($data['email'])) {
             $user = User::where('email', $data['email'])->first();
         }

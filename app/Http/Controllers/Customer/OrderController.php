@@ -8,6 +8,7 @@ use App\Models\Mitra;
 use App\Models\Product;
 use App\Services\CheckoutService;
 use App\Http\Requests\CheckoutRequest;
+use App\Jobs\SendOrderWhatsappNotification;
 
 class OrderController extends Controller
 {
@@ -90,6 +91,13 @@ class OrderController extends Controller
             $deliveryOption = $request->input('delivery_option', null); // pickup|mitra|admin
             $mitraShipping = $request->input('mitra_shipping', []);
             $order = $svc->checkout($request->lat, $request->lng, $request->address, $request->note, $paymentMethod, $bankId, $deliveryOption, $mitraShipping);
+
+            // Dispatch WhatsApp notification job after checkout (non-blocking)
+            try {
+                SendOrderWhatsappNotification::dispatch($order->id)->afterCommit();
+            } catch (\Throwable $e) {
+                // don't block checkout on WA errors
+            }
 
             if ($idempotency) {
                 $payload = ['success'=>true,'message'=>($paymentMethod === 'bank_transfer' ? 'Checkout pending payment' : 'Checkout success'),'data'=>$order];

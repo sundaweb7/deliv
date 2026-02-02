@@ -24,13 +24,17 @@ class ProfileApiController extends Controller
             'address_province' => 'nullable|string|max:255',
         ]);
 
-        // update user fields
-        $user->update(array_filter([ 'name' => $data['name'] ?? null, 'phone' => $data['phone'] ?? null ]));
+        // update user fields (normalize phone)
+        $phone = $data['phone'] ?? null;
+        if ($phone) { $phone = \App\Services\PhoneHelper::normalizeIndoPhone($phone); }
+        $user->update(array_filter([ 'name' => $data['name'] ?? null, 'phone' => $phone ?? null ]));
 
-        // update mitra fields
+        // update mitra fields (normalize wa number)
+        $wa = $data['wa_number'] ?? null;
+        if ($wa) { $wa = \App\Services\PhoneHelper::normalizeIndoPhone($wa); }
         $user->mitra->update([
             'business_name' => $data['business_name'] ?? $user->mitra->business_name,
-            'wa_number' => $data['wa_number'] ?? $user->mitra->wa_number,
+            'wa_number' => $wa ?? $user->mitra->wa_number,
             'address' => $data['address'] ?? $user->mitra->address,
             'address_desa' => $data['address_desa'] ?? $user->mitra->address_desa,
             'address_kecamatan' => $data['address_kecamatan'] ?? $user->mitra->address_kecamatan,

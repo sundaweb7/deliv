@@ -15,6 +15,26 @@
   <label>FCM Server Key</label><br>
   <textarea name="fcm_server_key" rows="4" style="width:100%">{{ old('fcm_server_key', $settings->fcm_server_key ?? '') }}</textarea><br>
   <small>Paste your FCM legacy server key or service account token here for server-side notifications.</small><br>
+
+  <h3>WhatsApp settings</h3>
+  <label>WhatsApp Provider</label><br>
+  <select name="wa_provider">
+    <option value="none" {{ old('wa_provider', $settings->wa_provider ?? 'none') == 'none' ? 'selected' : '' }}>None</option>
+    <option value="fontee" {{ old('wa_provider', $settings->wa_provider ?? '') == 'fontee' ? 'selected' : '' }}>Fontee</option>
+  </select><br>
+  <label>WhatsApp API Key</label><br>
+  <input name="wa_api_key" type="text" value="{{ old('wa_api_key', $settings->wa_api_key ?? '') }}"><br>
+  <label>WhatsApp Device ID</label><br>
+  <input name="wa_device_id" type="text" value="{{ old('wa_device_id', $settings->wa_device_id ?? '') }}"><br>
+  <label>WhatsApp API URL (optional)</label><br>
+  <input name="wa_api_url" type="text" value="{{ old('wa_api_url', $settings->wa_api_url ?? '') }}"><br>
+  <label>Enable WhatsApp notifications</label>
+  <input type="checkbox" name="wa_enabled" value="1" {{ old('wa_enabled', $settings->wa_enabled ?? true) ? 'checked' : '' }}><br>
+  <label>Send to Mitra</label>
+  <input type="checkbox" name="wa_send_to_mitra" value="1" {{ old('wa_send_to_mitra', $settings->wa_send_to_mitra ?? true) ? 'checked' : '' }}><br>
+  <label>Send to Customer</label>
+  <input type="checkbox" name="wa_send_to_customer" value="1" {{ old('wa_send_to_customer', $settings->wa_send_to_customer ?? true) ? 'checked' : '' }}><br>
+
   <button type="submit">Update</button>
 </form>
 @endsection
