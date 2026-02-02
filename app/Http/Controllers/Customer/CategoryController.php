@@ -10,7 +10,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $cats = Category::orderBy('name')->get();
+        // order categories by admin-defined order (default 0)
+        $cats = Category::orderBy('order')->get();
         return response()->json(['success'=>true,'message'=>'List categories','data'=>$cats]);
     }
 }

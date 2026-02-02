@@ -119,6 +119,10 @@ Route::get('/slides/image/thumb/{filename}', [\App\Http\Controllers\Asset\SlideI
 Route::get('/products/image/{filename}', [\App\Http\Controllers\Asset\ProductImageController::class, 'show']);
 Route::get('/products/image/thumb/{filename}', [\App\Http\Controllers\Asset\ProductImageController::class, 'thumb']);
 
+// Categories images (original & thumbnail)
+Route::get('/categories/image/{filename}', [\App\Http\Controllers\Asset\CategoryImageController::class, 'show']);
+Route::get('/categories/image/thumb/{filename}', [\App\Http\Controllers\Asset\CategoryImageController::class, 'thumb']);
+
 // Debug: list product images and thumb URLs (enabled only in local/debug)
 if (env('APP_DEBUG', false)) {
     Route::get('/debug/products-images', function () {
