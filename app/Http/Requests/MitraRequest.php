@@ -8,8 +8,18 @@ class MitraRequest extends FormRequest
 {
     public function authorize()
     {
-        // Only allow admin
-        return $this->user() && $this->user()->role === 'admin';
+        // Allow admin either via normal auth guard or via admin UI session
+        $user = $this->user();
+        if ($user && $user->role === 'admin') return true;
+
+        // admin UI uses session values (admin_user_id)
+        if ($this->session()->has('admin_user_id')) {
+            $adminId = $this->session()->get('admin_user_id');
+            $admin = \App\Models\User::find($adminId);
+            if ($admin && $admin->role === 'admin') return true;
+        }
+
+        return false;
     }
 
     public function rules()
