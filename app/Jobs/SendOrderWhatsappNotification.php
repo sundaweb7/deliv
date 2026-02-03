@@ -44,14 +44,34 @@ class SendOrderWhatsappNotification implements ShouldQueue
         }
         $itemsTextStr = implode("\n", $itemsText);
 
-        // Customer message
+        // Customer message (use localization templates)
         if ($settings->wa_send_to_customer) {
             $custPhone = $order->customer ? ($order->customer->phone ?? null) : null;
             if ($custPhone) {
-                // normalize phone before sending
                 $custPhone = \App\Services\PhoneHelper::normalizeIndoPhone($custPhone);
-                $message = "Pesanan Anda #{$order->id}\nTotal: Rp " . number_format($order->grand_total, 0, ',', '.') . "\nItems:\n{$itemsTextStr}\nAlamat: " . ($order->delivery_address ?? '') . "\nStatus: {$order->status}";
-                // create log entry
+
+                // determine locale: prefer customer locale if set, otherwise app locale
+                $custLocale = $order->customer && isset($order->customer->locale) ? $order->customer->locale : config('app.locale');
+                // Prefer DB template if available
+                $tpl = \App\Models\WhatsappTemplate::where('key','customer')->where('locale', $custLocale)->first();
+                if ($tpl) {
+                    $message = $this->replacePlaceholders($tpl->body, [
+                        ':order_id' => $order->id,
+                        ':total' => 'Rp ' . number_format($order->grand_total, 0, ',', '.'),
+                        ':items' => $itemsTextStr,
+                        ':address' => $order->delivery_address ?? '',
+                        ':status' => $order->status,
+                    ]);
+                } else {
+                    $message = \Illuminate\Support\Facades\Lang::get('whatsapp.customer_message', [
+                        'order_id' => $order->id,
+                        'total' => 'Rp ' . number_format($order->grand_total, 0, ',', '.'),
+                        'items' => $itemsTextStr,
+                        'address' => $order->delivery_address ?? '',
+                        'status' => $order->status,
+                    ], $custLocale);
+                }
+
                 $log = \App\Models\WhatsappLog::create(['order_id' => $order->id, 'target' => $custPhone, 'message' => $message, 'provider' => $settings->wa_provider]);
                 try {
                     $res = $wa->sendTextRaw($custPhone, $message);
@@ -63,14 +83,13 @@ class SendOrderWhatsappNotification implements ShouldQueue
             }
         }
 
-        // Mitra messages (one per vendor)
+        // Mitra messages (one per vendor) using localization
         if ($settings->wa_send_to_mitra) {
             foreach ($order->orderVendors as $ov) {
                 $mitra = $ov->mitra;
                 if (!$mitra) continue;
                 $mitraPhone = $mitra->wa_number ?? $mitra->user->phone ?? null;
                 if (!$mitraPhone) continue;
-                // normalize mitra number
                 $mitraPhone = \App\Services\PhoneHelper::normalizeIndoPhone($mitraPhone);
 
                 // Items only for this mitra
@@ -81,8 +100,28 @@ class SendOrderWhatsappNotification implements ShouldQueue
                 }
                 $mitraItemsStr = implode("\n", $mitraItems);
 
-                $msg = "Pesanan baru untuk Mitra #{$order->id}\nItems:\n{$mitraItemsStr}\nSubtotal: Rp " . number_format($ov->subtotal_food, 0, ',', '.') . "\nAlamat: " . ($order->delivery_address ?? '') . "\nStatus: {$ov->status}";
-                // create log entry
+                $mitraLocale = isset($mitra->locale) ? $mitra->locale : config('app.locale');
+
+                // prefer DB template
+                $tpl = \App\Models\WhatsappTemplate::where('key','mitra')->where('locale', $mitraLocale)->first();
+                if ($tpl) {
+                    $msg = $this->replacePlaceholders($tpl->body, [
+                        ':order_id' => $order->id,
+                        ':items' => $mitraItemsStr,
+                        ':subtotal' => 'Rp ' . number_format($ov->subtotal_food, 0, ',', '.'),
+                        ':address' => $order->delivery_address ?? '',
+                        ':status' => $ov->status,
+                    ]);
+                } else {
+                    $msg = \Illuminate\Support\Facades\Lang::get('whatsapp.mitra_message', [
+                        'order_id' => $order->id,
+                        'items' => $mitraItemsStr,
+                        'subtotal' => 'Rp ' . number_format($ov->subtotal_food, 0, ',', '.'),
+                        'address' => $order->delivery_address ?? '',
+                        'status' => $ov->status,
+                    ], $mitraLocale);
+                }
+
                 $log = \App\Models\WhatsappLog::create(['order_id' => $order->id, 'target' => $mitraPhone, 'message' => $msg, 'provider' => $settings->wa_provider]);
                 try {
                     $res = $wa->sendTextRaw($mitraPhone, $msg);
@@ -94,4 +133,11 @@ class SendOrderWhatsappNotification implements ShouldQueue
             }
         }
     }
+
+    protected function replacePlaceholders(string $tpl, array $map)
+    {
+        // make sure keys in $map are like :key
+        return strtr($tpl, $map);
+    }
 }
+

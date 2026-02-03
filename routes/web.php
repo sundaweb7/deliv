@@ -107,6 +107,11 @@ Route::post('/admin/wa-logs/{log}/resend', [\App\Http\Controllers\AdminUI\Whatsa
 Route::post('/admin/settings/test-wa-connection', [\App\Http\Controllers\AdminUI\SettingsController::class, 'testWaConnection'])->name('admin.settings.testWaConnection');
 Route::post('/admin/settings/send-test-wa', [\App\Http\Controllers\AdminUI\SettingsController::class, 'sendTestWaMessage'])->name('admin.settings.sendTestWa');
 
+// Admin UI: WhatsApp templates
+Route::get('/admin/whatsapp-templates', [\App\Http\Controllers\AdminUI\WhatsappTemplateController::class, 'index'])->name('admin.whatsapp-templates.index');
+Route::get('/admin/whatsapp-templates/{id}/edit', [\App\Http\Controllers\AdminUI\WhatsappTemplateController::class, 'edit'])->name('admin.whatsapp-templates.edit');
+Route::post('/admin/whatsapp-templates/{id}', [\App\Http\Controllers\AdminUI\WhatsappTemplateController::class, 'update'])->name('admin.whatsapp-templates.update');
+
 // Reports UI
 Route::get('/admin/reports/finance', [\App\Http\Controllers\AdminUI\ReportsController::class, 'finance'])->name('admin.reports.finance');
 
