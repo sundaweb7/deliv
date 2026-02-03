@@ -9,7 +9,7 @@ class Mitra extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'delivery_type', 'lat', 'lng', 'is_active', 'is_open', 'business_name', 'wa_number', 'address_desa', 'address_kecamatan', 'address_regency', 'address_province', 'address', 'profile_photo', 'store_photo'];
+    protected $fillable = ['user_id', 'delivery_type', 'lat', 'lng', 'is_active', 'is_open', 'business_name', 'wa_number', 'address_desa', 'address_kecamatan', 'address_regency', 'address_province', 'address', 'profile_photo', 'store_photo', 'bank_id', 'bank_account_name', 'bank_account_number'];
 
     public function user()
     {

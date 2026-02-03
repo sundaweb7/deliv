@@ -112,6 +112,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/wallet', [\App\Http\Controllers\Mitra\WalletController::class, 'balance']);
         Route::get('/wallet/transactions', [\App\Http\Controllers\Mitra\WalletController::class, 'transactions']);
         Route::post('/wallet/topup', [\App\Http\Controllers\Mitra\WalletController::class, 'requestTopup']);
+        // withdrawals (pencairan)
+        Route::get('/wallet/withdrawals', [\App\Http\Controllers\Mitra\WithdrawalController::class, 'index']);
+        Route::post('/wallet/withdrawals', [\App\Http\Controllers\Mitra\WithdrawalController::class, 'store']);
 
         // courier processing (accept/complete)
         Route::post('/courier/route/{id}/accept', [\App\Http\Controllers\Mitra\CourierProcessingController::class, 'accept']);
@@ -169,6 +172,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/mitra-topups', [\App\Http\Controllers\Admin\MitraTopupController::class, 'index']);
         Route::post('/mitra-topups/{id}/approve', [\App\Http\Controllers\Admin\MitraTopupController::class, 'approve']);
         Route::post('/mitra-topups/{id}/reject', [\App\Http\Controllers\Admin\MitraTopupController::class, 'reject']);
+
+        // admin: mitra withdrawal approvals
+        Route::get('/mitra-withdrawals', [\App\Http\Controllers\Admin\MitraWithdrawalController::class, 'index']);
+        Route::post('/mitra-withdrawals/{id}/approve', [\App\Http\Controllers\Admin\MitraWithdrawalController::class, 'approve']);
+        Route::post('/mitra-withdrawals/{id}/complete', [\App\Http\Controllers\Admin\MitraWithdrawalController::class, 'complete']);
+        Route::post('/mitra-withdrawals/{id}/reject', [\App\Http\Controllers\Admin\MitraWithdrawalController::class, 'reject']);
 
         Route::patch('/settings', [AdminController::class, 'updateSettings']);
 

@@ -112,6 +112,13 @@ Route::get('/admin/whatsapp-templates', [\App\Http\Controllers\AdminUI\WhatsappT
 Route::get('/admin/whatsapp-templates/{id}/edit', [\App\Http\Controllers\AdminUI\WhatsappTemplateController::class, 'edit'])->name('admin.whatsapp-templates.edit');
 Route::post('/admin/whatsapp-templates/{id}', [\App\Http\Controllers\AdminUI\WhatsappTemplateController::class, 'update'])->name('admin.whatsapp-templates.update');
 
+// Admin UI: Mitra Withdrawals
+Route::get('/admin/mitra-withdrawals', [\App\Http\Controllers\AdminUI\WithdrawalController::class, 'index'])->name('admin.mitra-withdrawals.index');
+Route::get('/admin/mitra-withdrawals/{id}', [\App\Http\Controllers\AdminUI\WithdrawalController::class, 'show'])->name('admin.mitra-withdrawals.show');
+Route::post('/admin/mitra-withdrawals/{id}/approve', [\App\Http\Controllers\AdminUI\WithdrawalController::class, 'approve'])->name('admin.mitra-withdrawals.approve');
+Route::post('/admin/mitra-withdrawals/{id}/complete', [\App\Http\Controllers\AdminUI\WithdrawalController::class, 'complete'])->name('admin.mitra-withdrawals.complete');
+Route::post('/admin/mitra-withdrawals/{id}/reject', [\App\Http\Controllers\AdminUI\WithdrawalController::class, 'reject'])->name('admin.mitra-withdrawals.reject');
+
 // Reports UI
 Route::get('/admin/reports/finance', [\App\Http\Controllers\AdminUI\ReportsController::class, 'finance'])->name('admin.reports.finance');
 
