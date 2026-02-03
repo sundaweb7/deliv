@@ -62,6 +62,34 @@ Note: WebSocket broadcasting support (Pusher / laravel-websockets) has been temp
 
 If you want to re-enable real-time broadcasts later, re-add `beyondcode/laravel-websockets`, publish its config, set the proper `PUSHER_*` env vars and restore the event broadcasting callers.
 
+---
+
+## Building assets (recommended)
+
+For deterministic and secure production deploys, build your frontend assets (Tailwind/Vite) in CI or locally and upload the generated `public/build` directory to your server.
+
+Quick local steps:
+
+- Install node (LTS) and run:
+
+  ```bash
+  npm ci
+  npm run build
+  ```
+
+- Copy `public/build` to your server's `public/build` (include `manifest.json`).
+- Clear caches on server if necessary:
+
+  ```bash
+  php artisan view:clear && php artisan config:clear && php artisan cache:clear
+  ```
+
+GitHub Actions: a workflow `/.github/workflows/build-assets.yml` is included that builds and uploads `public/build` as an artifact named `public-build` on pushes to `main`.
+
+## Fonts
+
+We load Inter via Google Fonts in the admin layout for improved typography. If you need self-hosted fonts for privacy or offline, build them into the project and update the CSS accordingly.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
