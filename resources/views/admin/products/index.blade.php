@@ -4,8 +4,12 @@
 
 @section('content')
 <x-admin.card title="Products">
-  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
-  <div class="flex justify-end mb-4"><a href="{{ route('admin.products.create') }}"><x-admin.button>Create product</x-admin.button></a></div>
+  @if(session('success'))
+    <div class="alert alert-success mb-3">{{ session('success') }}</div>
+  @endif
+  <div class="d-flex justify-content-end mb-4">
+    <a href="{{ route('admin.products.create') }}"><x-admin.button class="btn-primary btn-sm">Create product</x-admin.button></a>
+  </div>
 
   <x-admin.table>
     <x-slot name="thead">
@@ -17,7 +21,7 @@
         <td class="py-2">{{ $p->id }}</td>
         <td class="py-2">
           @if($p->image)
-            <img src="{{ $p->thumb_url ?? asset('storage/products/originals/' . $p->image) }}" class="inline-block mr-3" style="max-width:80px;max-height:60px" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABH0lEQVR4nO3XsQ3AIAxEUfP+f7aG0m3BRY8ZQ6Zx3FQbwG7GxgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGDwQfF1k6F3X+v7q9ZyH0gC6oF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgX6Bp8F+Q9M0wA2Fq9kQAAAABJRU5ErkJggg==';">
+            <img src="{{ $p->thumb_url ?? asset('storage/products/originals/' . $p->image) }}" class="img-thumbnail me-3" style="max-width:80px;max-height:60px" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABH0lEQVR4nO3XsQ3AIAxEUfP+f7aG0m3BRY8ZQ6Zx3FQbwG7GxgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGDwQfF1k6F3X+v7q9ZyH0gC6oF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgXaBaA6qBdoFoDqoF2gWgOqgX6Bp8F+Q9M0wA2Fq9kQAAAABJRU5ErkJggg=='">
           @endif
           {{ $p->name }}
         </td>

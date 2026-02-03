@@ -4,10 +4,12 @@
 
 @section('content')
 <x-admin.card title="Users">
-  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
-  <div class="flex items-center justify-between mb-4">
-    <form method="GET" action="{{ route('admin.users.index') }}" class="flex items-center gap-2">
-      <select name="role" onchange="this.form.submit()" class="border rounded p-2 text-sm">
+  @if(session('success'))
+    <div class="alert alert-success mb-3">{{ session('success') }}</div>
+  @endif
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <form method="GET" action="{{ route('admin.users.index') }}">
+      <select name="role" onchange="this.form.submit()" class="form-select form-select-sm">
         <option value="">All</option>
         <option value="customer" {{ request('role')=='customer'?'selected':'' }}>Customer</option>
         <option value="mitra" {{ request('role')=='mitra'?'selected':'' }}>Mitra</option>
@@ -15,7 +17,7 @@
         <option value="admin" {{ request('role')=='admin'?'selected':'' }}>Admin</option>
       </select>
     </form>
-    <a href="{{ route('admin.users.create') }}"><x-admin.button>Create user</x-admin.button></a>
+    <a href="{{ route('admin.users.create') }}"><x-admin.button class="btn-primary btn-sm">Create user</x-admin.button></a>
   </div>
 
   <x-admin.table>

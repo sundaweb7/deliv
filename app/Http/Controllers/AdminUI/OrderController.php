@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\AdminUI;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminUI\AdminBaseController;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class OrderController extends AdminBaseController
 {
     public function index(Request $request)
     {

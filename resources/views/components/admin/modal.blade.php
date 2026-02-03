@@ -1,9 +1,13 @@
-<div x-data="{open:@entangle($attributes->wire('model'))||false}" x-show="open" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-  <div class="bg-white rounded shadow-lg w-full max-w-2xl p-4">
-    <div class="flex justify-between items-center mb-3">
-      <h3 class="font-semibold">{{ $title ?? 'Modal' }}</h3>
-      <button @click="open = false" class="text-gray-500">✕</button>
+<div x-data="{open:@entangle($attributes->wire('model'))||false}" x-show="open" class="modal fade show d-block" style="background: rgba(0,0,0,0.4);">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ $title ?? 'Modal' }}</h5>
+        <button type="button" class="btn-close" @click="open=false" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ $slot }}
+      </div>
     </div>
-    <div>{{ $slot }}</div>
   </div>
 </div>

@@ -4,44 +4,46 @@
 
 @section('content')
 <x-admin.card title="Create Product">
-  @if($errors->any())<div class="text-red-600 mb-3">{{ $errors->first() }}</div>@endif
-  <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data" class="space-y-3">
+  @if($errors->any())
+    <div class="alert alert-danger mb-3">{{ $errors->first() }}</div>
+  @endif
+  <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
     @csrf
-    <div>
-      <label class="text-sm text-gray-600">Mitra</label>
-      <select name="mitra_id" class="mt-1 block w-full border rounded p-2">@foreach($mitras as $m)<option value="{{ $m->id }}">{{ $m->user->name ?? $m->id }}</option>@endforeach</select>
+    <div class="mb-3">
+      <label class="form-label">Mitra</label>
+      <select name="mitra_id" class="form-select form-select-sm">@foreach($mitras as $m)<option value="{{ $m->id }}">{{ $m->user->name ?? $m->id }}</option>@endforeach</select>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Name</label>
-      <input name="name" required class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input name="name" required class="form-control form-control-sm">
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Description</label>
-      <textarea name="description" class="mt-1 block w-full border rounded p-2"></textarea>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control form-control-sm"></textarea>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <div>
-        <label class="text-sm text-gray-600">Price</label>
-        <input name="price" required type="number" class="mt-1 block w-full border rounded p-2">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Price</label>
+        <input name="price" required type="number" class="form-control form-control-sm">
       </div>
-      <div>
-        <label class="text-sm text-gray-600">Stock</label>
-        <input name="stock" required type="number" value="1" class="mt-1 block w-full border rounded p-2">
+      <div class="col-md-6">
+        <label class="form-label">Stock</label>
+        <input name="stock" required type="number" value="1" class="form-control form-control-sm">
       </div>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Image</label>
-      <input type="file" name="image" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/gif,image/webp" id="imageInput" class="mt-1 block w-full">
-      <small class="text-sm text-gray-500">Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
-      <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
+    <div class="mb-3">
+      <label class="form-label">Image</label>
+      <input type="file" name="image" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/gif,image/webp" id="imageInput" class="form-control form-control-sm">
+      <small class="form-text text-muted">Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
+      <div class="mt-2"><img id="imagePreview" src="#" class="img-fluid" style="display:none"></div>
     </div>
 
-    <div class="flex justify-end">
-      <x-admin.button>Create</x-admin.button>
+    <div class="d-flex justify-content-end">
+      <x-admin.button class="btn-primary">Create</x-admin.button>
     </div>
   </form>
 </x-admin.card>

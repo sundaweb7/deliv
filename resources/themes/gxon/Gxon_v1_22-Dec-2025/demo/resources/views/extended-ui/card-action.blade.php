@@ -1,0 +1,519 @@
+@extends('layouts.app')
+
+@push('styles')
+	<!-- begin::GXON Required Stylesheet -->
+	<link rel="stylesheet" href="{{ asset('assets/libs/flaticon/css/all/all.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/libs/lucide/lucide.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/libs/fontawesome/css/all.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/libs/simplebar/simplebar.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/libs/node-waves/waves.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/libs/bootstrap-select/css/bootstrap-select.min.css') }}">
+	<!-- end::GXON Required Stylesheet -->
+
+	<!-- begin::GXON CSS Stylesheet -->
+	<link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
+	<!-- end::GXON CSS Stylesheet -->
+@endpush
+
+@push('scripts')
+	<!-- begin::GXON Page Scripts -->
+	<script src="{{ asset('assets/libs/global/global.min.js') }}"></script>
+	<script src="{{ asset('assets/js/appSettings.js') }}"></script>
+	<script src="{{ asset('assets/js/main.js') }}"></script>
+	<!-- end::GXON Page Scripts -->
+@endpush
+
+@section('content')
+<div class="app-page-head">
+	<h1 class="app-page-title">Card action</h1>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ route('index') }}">Dashboard</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Card action</li>
+		</ol>
+	</nav>
+</div>
+<div class="row mb-3">
+	<div class="col-12">
+		<h6 class="card-title mb-3">Card outline</h6>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-secondary p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-secondary">
+					<i class="fi fi-sr-shopping-bag fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Total Job Openings</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-warning p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-warning">
+					<i class="fi fi-sr-document fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Total Application</div>
+					<h3 class="mb-0 fw-bold">35,002</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-info p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-info">
+					<i class="fi fi-sr-users fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Shortlisted </div>
+					<h3 class="mb-0 fw-bold">20,273</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-primary p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-primary">
+					<i class="fi fi-sr-headphones fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Interviewed </div>
+					<h3 class="mb-0 fw-bold">12,240</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-danger p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-danger">
+					<i class="fi fi-sr-delete-user fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Rejected</div>
+					<h3 class="mb-0 fw-bold">13,250</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-success p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-success">
+					<i class="fi fi-sr-trophy fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Achievement</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action action-border-dark p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-dark">
+					<i class="fi fi-sr-circle-bolt fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Job Openings</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row mb-3">
+	<div class="col-12">
+		<h6 class="card-title mb-3">Visible in hover</h6>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-secondary">
+					<i class="fi fi-sr-shopping-bag fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Total Job Openings</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-secondary position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-warning">
+					<i class="fi fi-sr-document fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Total Application</div>
+					<h3 class="mb-0 fw-bold">35,002</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-warning position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-info">
+					<i class="fi fi-sr-users fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Shortlisted </div>
+					<h3 class="mb-0 fw-bold">20,273</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-info position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-primary">
+					<i class="fi fi-sr-headphones fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Interviewed </div>
+					<h3 class="mb-0 fw-bold">12,240</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-primary position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-danger">
+					<i class="fi fi-sr-delete-user fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Rejected</div>
+					<h3 class="mb-0 fw-bold">13,250</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-danger position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-success">
+					<i class="fi fi-sr-trophy fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Achievement</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-success position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-lg-4 col-sm-6">
+		<div class="card card-action p-1 position-relative">
+			<div class="card-body d-flex gap-3 align-items-center p-4">
+				<div class="clearfix pe-2 text-dark">
+					<i class="fi fi-sr-circle-bolt fs-1"></i>
+				</div>
+				<div class="clearfix">
+					<div class="mb-1">Job Openings</div>
+					<h3 class="mb-0 fw-bold">1,335</h3>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="action-visible link-dark position-absolute bottom-0 end-0 mb-2 me-2">
+				View All <i class="fi fi-rr-arrow-right ms-1"></i>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="row mb-3">
+	<div class="col-12">
+		<h6 class="card-title mb-3">Card elevate</h6>
+	</div>
+	<div class="col-xxl-3 col-md-6">
+		<div class="card card-action action-elevate bg-primary-subtle border-0 shadow-none">
+			<div class="card-body">
+				<div class="d-flex gap-3 align-items-center mb-4">
+					<div class="avatar bg-body rounded-3 p-2">
+						<img src="{{ asset('assets/images/media/figma.png') }}" alt="">
+					</div>
+					<div class="clearfix">
+						<h6 class="mb-1 text-sm">Figma Designer</h6>
+						<ul class="list-inline list-inline-disc d-flex mb-0">
+							<li>Full Time</li>
+							<li>Remote</li>
+						</ul>
+					</div>
+				</div>
+				<div class="bg-body p-3 rounded-3 mb-3 d-flex">
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">76</h2>
+						<span class="text-primary">Applied</span>
+					</div>
+					<div class="vr"></div>
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">14</h2>
+						<span class="text-primary">New</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between gap-2 pt-1 mb-3">
+					<div class="text-start">
+						<span class="text-1xs">Salary</span>
+						<span class="text-sm text-dark d-block fw-semibold">$100K - $200K</span>
+					</div>
+					<div class="text-end">
+						<span class="text-1xs">Location</span>
+						<span class="text-sm text-dark d-block fw-semibold">USA</span>
+					</div>
+				</div>
+				<a href="{{ route('blog') }}" class="btn btn-primary waves-effect waves-light w-100">
+					See Job Post
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-md-6">
+		<div class="card card-action action-elevate bg-secondary-subtle border-0 shadow-none">
+			<div class="card-body">
+				<div class="d-flex gap-3 align-items-center mb-4">
+					<div class="avatar bg-body rounded-3 p-2">
+						<img src="{{ asset('assets/images/media/python.png') }}" alt="">
+					</div>
+					<div class="clearfix">
+						<h6 class="mb-1 text-sm">Python Developer </h6>
+						<ul class="list-inline list-inline-disc d-flex mb-0">
+							<li>Full Time</li>
+							<li>Remote</li>
+						</ul>
+					</div>
+				</div>
+				<div class="bg-body p-3 rounded-3 mb-3 d-flex">
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">12</h2>
+						<span class="text-primary">Applied</span>
+					</div>
+					<div class="vr"></div>
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">07</h2>
+						<span class="text-primary">New</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between gap-2 pt-1 mb-3">
+					<div class="text-start">
+						<span class="text-1xs">Salary</span>
+						<span class="text-sm text-dark d-block fw-semibold">$100K - $200K</span>
+					</div>
+					<div class="text-end">
+						<span class="text-1xs">Location</span>
+						<span class="text-sm text-dark d-block fw-semibold">USA</span>
+					</div>
+				</div>
+				<a href="{{ route('blog') }}" class="btn btn-primary waves-effect waves-light w-100">
+					See Job Post
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-md-6">
+		<div class="card card-action action-elevate bg-info-subtle border-0 shadow-none">
+			<div class="card-body">
+				<div class="d-flex gap-3 align-items-center mb-4">
+					<div class="avatar bg-body rounded-3 p-2">
+						<img src="{{ asset('assets/images/media/code.png') }}" alt="">
+					</div>
+					<div class="clearfix">
+						<h6 class="mb-1 text-sm">Web Developer</h6>
+						<ul class="list-inline list-inline-disc d-flex mb-0">
+							<li>Full Time</li>
+							<li>Remote</li>
+						</ul>
+					</div>
+				</div>
+				<div class="bg-body p-3 rounded-3 mb-3 d-flex">
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">99</h2>
+						<span class="text-primary">Applied</span>
+					</div>
+					<div class="vr"></div>
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">23</h2>
+						<span class="text-primary">New</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between gap-2 pt-1 mb-3">
+					<div class="text-start">
+						<span class="text-1xs">Salary</span>
+						<span class="text-sm text-dark d-block fw-semibold">$100K - $200K</span>
+					</div>
+					<div class="text-end">
+						<span class="text-1xs">Location</span>
+						<span class="text-sm text-dark d-block fw-semibold">USA</span>
+					</div>
+				</div>
+				<a href="{{ route('blog') }}" class="btn btn-primary waves-effect waves-light w-100">
+					See Job Post
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xxl-3 col-md-6">
+		<div class="card card-action action-elevate bg-success-subtle border-0 shadow-none">
+			<div class="card-body">
+				<div class="d-flex gap-3 align-items-center mb-4">
+					<div class="avatar bg-body rounded-3 p-2">
+						<img src="{{ asset('assets/images/media/react.png') }}" alt="">
+					</div>
+					<div class="clearfix">
+						<h6 class="mb-1 text-sm">React Developer</h6>
+						<ul class="list-inline list-inline-disc d-flex mb-0">
+							<li>Full Time</li>
+							<li>Remote</li>
+						</ul>
+					</div>
+				</div>
+				<div class="bg-body p-3 rounded-3 mb-3 d-flex">
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">46</h2>
+						<span class="text-primary">Applied</span>
+					</div>
+					<div class="vr"></div>
+					<div class="text-center w-50">
+						<h2 class="fs-1 fw-bold mb-1">61</h2>
+						<span class="text-primary">New</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between gap-2 pt-1 mb-3">
+					<div class="text-start">
+						<span class="text-1xs">Salary</span>
+						<span class="text-sm text-dark d-block fw-semibold">$100K - $200K</span>
+					</div>
+					<div class="text-end">
+						<span class="text-1xs">Location</span>
+						<span class="text-sm text-dark d-block fw-semibold">USA</span>
+					</div>
+				</div>
+				<a href="{{ route('blog') }}" class="btn btn-primary waves-effect waves-light w-100">
+					See Job Post
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row mb-3">
+	<div class="col-12">
+		<h6 class="card-title mb-3">Mixed</h6>
+	</div>
+	<div class="col-xl-4 col-lg-6 col-md-6 m-b30">
+		<div class="card card-action action-elevate action-border-primary">
+			<div class="card-header border-0 p-0 m-2 position-relative overflow-hidden">
+				<img src="{{ asset('assets/images/blog/blog1.webp') }}" alt="" class="img-fluid rounded">
+				<div class="position-absolute action-visible top-0 start-0 h-100 w-100 bg-dark bg-opacity-50 rounded d-flex align-items-center justify-content-center">
+					<a href="{{ route('blog-details') }}" class="btn btn-icon btn-lg btn-secondary rounded-circle waves-effect waves-light">
+						<i class="fi fi-rr-arrow-right"></i>
+					</a>
+				</div>
+			</div>
+			<div class="card-body px-3 py-2">
+				<h4>
+				<a href="{{ route('blog-details') }}" class="text-dark">Effective Hiring Process for Finding the Right Talent</a>
+				</h4>
+				<p>Lorem Ipsum is simply dummy text of the printing and typesetting standard dummy text ever since.</p>
+			</div>
+			<div class="card-footer mx-3 px-0 py-3 pb-4">
+				<ul class="d-flex list-inline mb-0 gap-3 flex-wrap">
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-calendar text-primary"></i>
+						<a class="text-body" href="javascript:void(0);">17 March 2025</a>
+					</li>
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-circle-user text-primary"></i> BY
+						<a class="text-body" href="javascript:void(0);"> Roberts</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-4 col-lg-6 col-md-6 m-b30">
+		<div class="card card-action action-elevate action-border-primary">
+			<div class="card-header border-0 p-0 m-2 position-relative overflow-hidden">
+				<img src="{{ asset('assets/images/blog/blog2.webp') }}" alt="" class="img-fluid rounded">
+				<div class="position-absolute action-visible top-0 start-0 h-100 w-100 bg-dark bg-opacity-50 rounded d-flex align-items-center justify-content-center">
+					<a href="{{ route('blog-details') }}" class="btn btn-icon btn-lg btn-secondary rounded-circle waves-effect waves-light">
+						<i class="fi fi-rr-arrow-right"></i>
+					</a>
+				</div>
+			</div>
+			<div class="card-body px-3 py-2">
+				<h4>
+				<a href="{{ route('blog-details') }}" class="text-dark">Employee Onboarding and the Power of First Impressions</a>
+				</h4>
+				<p>Lorem Ipsum is simply dummy text of the printing and typesetting standard dummy text ever since.</p>
+			</div>
+			<div class="card-footer mx-3 px-0 py-3 pb-4">
+				<ul class="d-flex list-inline mb-0 gap-3 flex-wrap">
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-calendar text-primary"></i>
+						<a class="text-body" href="javascript:void(0);">17 March 2025</a>
+					</li>
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-circle-user text-primary"></i> BY
+						<a class="text-body" href="javascript:void(0);"> Roberts</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-4 col-lg-6 col-md-6 m-b30">
+		<div class="card card-action action-elevate action-border-primary">
+			<div class="card-header border-0 p-0 m-2 position-relative overflow-hidden">
+				<img src="{{ asset('assets/images/blog/blog3.webp') }}" alt="" class="img-fluid rounded">
+				<div class="position-absolute action-visible top-0 start-0 h-100 w-100 bg-dark bg-opacity-50 rounded d-flex align-items-center justify-content-center">
+					<a href="{{ route('blog-details') }}" class="btn btn-icon btn-lg btn-secondary rounded-circle waves-effect waves-light">
+						<i class="fi fi-rr-arrow-right"></i>
+					</a>
+				</div>
+			</div>
+			<div class="card-body px-3 py-2">
+				<h4>
+				<a href="{{ route('blog-details') }}" class="text-dark">Training and Development for a Skilled Workforce</a>
+				</h4>
+				<p>Lorem Ipsum is simply dummy text of the printing and typesetting standard dummy text ever since.</p>
+			</div>
+			<div class="card-footer mx-3 px-0 py-3 pb-4">
+				<ul class="d-flex list-inline mb-0 gap-3 flex-wrap">
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-calendar text-primary"></i>
+						<a class="text-body" href="javascript:void(0);">17 March 2025</a>
+					</li>
+					<li class="d-flex gap-1 align-items-center">
+						<i class="icon-circle-user text-primary"></i> BY
+						<a class="text-body" href="javascript:void(0);"> Roberts</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection

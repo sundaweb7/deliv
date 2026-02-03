@@ -4,40 +4,42 @@
 
 @section('content')
 <x-admin.card title="Create User">
-  @if($errors->any())<div class="text-red-600 mb-3">{{ implode(', ', $errors->all()) }}</div>@endif
-  <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data" class="space-y-3">
+  @if($errors->any())
+    <div class="alert alert-danger mb-3">{{ implode(', ', $errors->all()) }}</div>
+  @endif
+  <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
     @csrf
-    <div>
-      <label class="text-sm text-gray-600">Name</label>
-      <input name="name" value="{{ old('name') }}" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input name="name" value="{{ old('name') }}" class="form-control form-control-sm">
     </div>
-    <div>
-      <label class="text-sm text-gray-600">Email</label>
-      <input name="email" value="{{ old('email') }}" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input name="email" value="{{ old('email') }}" class="form-control form-control-sm">
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <div>
-        <label class="text-sm text-gray-600">Phone</label>
-        <input name="phone" value="{{ old('phone') }}" class="mt-1 block w-full border rounded p-2">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Phone</label>
+        <input name="phone" value="{{ old('phone') }}" class="form-control form-control-sm">
       </div>
-      <div>
-        <label class="text-sm text-gray-600">WA Number</label>
-        <input name="wa_number" value="{{ old('wa_number') }}" class="mt-1 block w-full border rounded p-2">
+      <div class="col-md-6">
+        <label class="form-label">WA Number</label>
+        <input name="wa_number" value="{{ old('wa_number') }}" class="form-control form-control-sm">
       </div>
     </div>
-    <div>
-      <label class="text-sm text-gray-600">Address</label>
-      <textarea name="address" class="mt-1 block w-full border rounded p-2">{{ old('address') }}</textarea>
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <textarea name="address" class="form-control form-control-sm">{{ old('address') }}</textarea>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Profile Photo</label>
-      <input type="file" name="profile_photo" class="mt-1 block w-full">
+    <div class="mb-3">
+      <label class="form-label">Profile Photo</label>
+      <input type="file" name="profile_photo" class="form-control form-control-sm">
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Role</label>
-      <select name="role" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-select form-select-sm">
         <option value="admin">Admin</option>
         <option value="mitra">Mitra</option>
         <option value="driver">Driver</option>
@@ -45,13 +47,13 @@
       </select>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Password</label>
-      <input type="password" name="password" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" name="password" class="form-control form-control-sm">
     </div>
 
-    <div class="flex justify-end">
-      <x-admin.button>Create</x-admin.button>
+    <div class="d-flex justify-content-end">
+      <x-admin.button class="btn-primary">Create</x-admin.button>
     </div>
   </form>
 </x-admin.card>

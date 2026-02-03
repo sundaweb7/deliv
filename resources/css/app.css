@@ -14,3 +14,14 @@
 
 /* Add minimal custom styles if needed */
 .body-font { font-family: var(--font-sans); }
+
+/* Sidebar scrolling and sizing to match viewport */
+.app-menubar { height: 100vh; overflow: hidden; }
+.app-navbar { max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 8px; }
+.app-sidebar-end { max-height: calc(100vh - 120px); overflow-y: auto; }
+
+/* Small visual tweak for scrollable area */
+.app-navbar::-webkit-scrollbar { width: 8px; }
+.app-navbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 8px; }
+.app-navbar .menu-label { white-space: nowrap; }
+
