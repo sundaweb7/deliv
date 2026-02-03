@@ -1,45 +1,57 @@
 @extends('admin.layout')
 
+@section('page-title','Edit Product')
+
 @section('content')
-<div>
-    <h1>Edit Product</h1>
-    @if ($errors->any())
-        <div style="color:#b00020">{{ implode(', ', $errors->all()) }}</div>
-    @endif
-    <form method="post" action="{{ route('admin.products.update', ['product' => $product->id]) }}" enctype="multipart/form-data">
-        @csrf
-        @method('put')
-        <div>
-            <label>Mitra</label>
-            <select name="mitra_id">
-                @foreach($mitras as $m)
-                <option value="{{ $m->id }}" {{ $m->id == $product->mitra_id ? 'selected' : '' }}>{{ $m->user->name ?? 'Mitra ' . $m->id }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div>
-            <label>Name</label>
-            <input type="text" name="name" value="{{ $product->name }}">
-        </div>
-        <div>
-            <label>Description</label>
-            <textarea name="description">{{ $product->description }}</textarea>
-        </div>
-        <div>
-            <label>Price</label>
-            <input type="number" name="price" value="{{ $product->price }}">
-        </div>
-        <div>
-            <label>Stock</label>
-            <input type="number" name="stock" value="{{ $product->stock }}">
-        </div>
-        <div>
-            <label>Image</label>
-            @if($product->image) <div><img id="currentImage" src="{{ $product->thumb_url }}" style="height:80px"></div> @endif
-            <input type="file" name="image" id="imageInput">
-            <small>Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
-            <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
-        </div>
+<x-admin.card :title="'Edit Product - ' . ($product->name ?? '')">
+  @if ($errors->any())<div class="text-red-600 mb-3">{{ implode(', ', $errors->all()) }}</div>@endif
+  <form method="post" action="{{ route('admin.products.update', ['product' => $product->id]) }}" enctype="multipart/form-data" class="space-y-3">
+    @csrf
+    @method('put')
+
+    <div>
+      <label class="text-sm text-gray-600">Mitra</label>
+      <select name="mitra_id" class="mt-1 block w-full border rounded p-2">
+        @foreach($mitras as $m)
+          <option value="{{ $m->id }}" {{ $m->id == $product->mitra_id ? 'selected' : '' }}>{{ $m->user->name ?? 'Mitra ' . $m->id }}</option>
+        @endforeach
+      </select>
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600">Name</label>
+      <input type="text" name="name" value="{{ $product->name }}" class="mt-1 block w-full border rounded p-2">
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600">Description</label>
+      <textarea name="description" class="mt-1 block w-full border rounded p-2">{{ $product->description }}</textarea>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <label class="text-sm text-gray-600">Price</label>
+        <input type="number" name="price" value="{{ $product->price }}" class="mt-1 block w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="text-sm text-gray-600">Stock</label>
+        <input type="number" name="stock" value="{{ $product->stock }}" class="mt-1 block w-full border rounded p-2">
+      </div>
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600">Image</label>
+      @if($product->image) <div class="mb-2"><img id="currentImage" src="{{ $product->thumb_url }}" style="height:80px"></div> @endif
+      <input type="file" name="image" id="imageInput" class="mt-1 block w-full">
+      <small class="text-sm text-gray-500">Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
+      <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
+    </div>
+
+    <div class="flex justify-end">
+      <x-admin.button>Update</x-admin.button>
+    </div>
+  </form>
+</x-admin.card>
 
 @section('scripts')
 <script>
@@ -71,9 +83,4 @@ if (imageInput){
 }
 </script>
 @endsection
-        <div style="margin-top:8px">
-            <button>Update</button>
-        </div>
-    </form>
-</div>
 @endsection

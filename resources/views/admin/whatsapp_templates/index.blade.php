@@ -1,19 +1,24 @@
 @extends('admin.layout')
 
+@section('page-title','WhatsApp Templates')
+
 @section('content')
-<h1>WhatsApp Templates</h1>
-@if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-<table class="table">
-    <thead><tr><th>Key</th><th>Locale</th><th>Preview</th><th>Action</th></tr></thead>
-    <tbody>
+<x-admin.card title="WhatsApp Templates">
+  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
+
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>Key</th><th>Locale</th><th>Preview</th><th>Action</th></tr>
+    </x-slot>
+
     @foreach($templates as $t)
-        <tr>
-            <td>{{ $t->key }}</td>
-            <td>{{ $t->locale }}</td>
-            <td><pre style="white-space:pre-wrap">{{ $t->body }}</pre></td>
-            <td><a class="btn btn-sm btn-primary" href="{{ route('admin.whatsapp-templates.edit', $t->id) }}">Edit</a></td>
-        </tr>
+      <tr>
+        <td class="py-2">{{ $t->key }}</td>
+        <td class="py-2">{{ $t->locale }}</td>
+        <td class="py-2"><pre style="white-space:pre-wrap">{{ $t->body }}</pre></td>
+        <td class="py-2"><a href="{{ route('admin.whatsapp-templates.edit', $t->id) }}"><x-admin.button variant="muted">Edit</x-admin.button></a></td>
+      </tr>
     @endforeach
-    </tbody>
-</table>
+    </x-admin.table>
+</x-admin.card>
 @endsection

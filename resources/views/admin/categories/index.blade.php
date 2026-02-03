@@ -1,46 +1,31 @@
 @extends('admin.layout')
 
+@section('page-title','Categories')
+
 @section('content')
-    <h1>Categories</h1>
-    <p><a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Create Category</a></p>
+<x-admin.card title="Categories">
+  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
+  <div class="flex justify-end mb-4"><a href="{{ route('admin.categories.create') }}"><x-admin.button>Create Category</x-admin.button></a></div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>#</th><th>Icon</th><th>Name</th><th>Order</th><th>Actions</th></tr>
+    </x-slot>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Icon</th>
-                <th>Name</th>
-                <th>Order</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($categories as $cat)
-                <tr>
-                    <td>{{ $cat->id }}</td>
-                    <td>
-                        @if($cat->icon)
-                            <img src="{{ asset('storage/categories/thumb/' . $cat->icon) }}" style="height:48px;" alt="icon">
-                        @endif
-                    </td>
-                    <td>{{ $cat->name }}</td>
-                    <td>{{ $cat->order }}</td>
-                    <td>
-                        <a href="{{ route('admin.categories.edit', $cat->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <form action="{{ route('admin.categories.destroy', $cat->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Delete category?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @foreach($categories as $cat)
+      <tr>
+        <td class="py-2">{{ $cat->id }}</td>
+        <td class="py-2">@if($cat->icon)<img src="{{ asset('storage/categories/thumb/' . $cat->icon) }}" style="height:48px" alt="icon">@endif</td>
+        <td class="py-2">{{ $cat->name }}</td>
+        <td class="py-2">{{ $cat->order }}</td>
+        <td class="py-2">
+          <a href="{{ route('admin.categories.edit', $cat->id) }}"><x-admin.button variant="muted">Edit</x-admin.button></a>
+          <form action="{{ route('admin.categories.destroy', $cat->id) }}" method="POST" style="display:inline">@csrf @method('DELETE')<button type="submit" class="ml-2"><x-admin.button variant="danger">Delete</x-admin.button></button></form>
+        </td>
+      </tr>
+    @endforeach
+  </x-admin.table>
 
-    {{ $categories->links() }}
+  <x-admin.pagination :paginator="$categories" />
+</x-admin.card>
 @endsection

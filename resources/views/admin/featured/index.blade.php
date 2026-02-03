@@ -1,11 +1,13 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="container">
-    <h1>Featured Products</h1>
-    <a href="{{ route('admin.featured.create') }}" class="btn btn-primary">Add Featured Product</a>
+<x-admin.card title="Featured">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-semibold">Featured Products</h1>
+      <a href="{{ route('admin.featured.create') }}"><x-admin.button>Add Featured Product</x-admin.button></a>
+    </div>
     @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-    <table class="table mt-3">
+    <x-admin.table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -31,6 +33,6 @@
             </tr>
             @endforeach
         </tbody>
-    </table>
-</div>
+    </x-admin.table>
+</x-admin.card>
 @endsection

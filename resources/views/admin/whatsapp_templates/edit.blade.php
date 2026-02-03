@@ -1,21 +1,26 @@
 @extends('admin.layout')
 
+@section('page-title','Edit WA Template')
+
 @section('content')
-<h1>Edit Template</h1>
-<form method="POST" action="{{ route('admin.whatsapp-templates.update', $tpl->id) }}">
+<x-admin.card :title="'Template: ' . $tpl->key">
+  <form method="POST" action="{{ route('admin.whatsapp-templates.update', $tpl->id) }}" class="space-y-3">
     @csrf
-    <div class="form-group">
-        <label>Key</label>
-        <input class="form-control" readonly value="{{ $tpl->key }}">
+    <div>
+      <label class="text-sm text-gray-600">Key</label>
+      <input class="mt-1 block w-full border rounded p-2" readonly value="{{ $tpl->key }}">
     </div>
-    <div class="form-group">
-        <label>Locale</label>
-        <input class="form-control" readonly value="{{ $tpl->locale }}">
+    <div>
+      <label class="text-sm text-gray-600">Locale</label>
+      <input class="mt-1 block w-full border rounded p-2" readonly value="{{ $tpl->locale }}">
     </div>
-    <div class="form-group">
-        <label>Body (use placeholders :order_id :total :items :address :status :subtotal)</label>
-        <textarea name="body" class="form-control" rows="8">{{ old('body', $tpl->body) }}</textarea>
+    <div>
+      <label class="text-sm text-gray-600">Body (use placeholders :order_id :total :items :address :status :subtotal)</label>
+      <textarea name="body" class="mt-1 block w-full border rounded p-2" rows="8">{{ old('body', $tpl->body) }}</textarea>
     </div>
-    <button class="btn btn-primary">Save</button>
-</form>
+    <div class="flex justify-end">
+      <x-admin.button>Save</x-admin.button>
+    </div>
+  </form>
+</x-admin.card>
 @endsection

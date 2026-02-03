@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="container">
+<x-admin.card title="Mitra Status Logs">
     <h1>Mitra Status Logs</h1>
 
     <form method="get" class="form-inline mb-3">
@@ -27,34 +27,24 @@
         <button class="btn btn-primary">Filter</button>
     </form>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Mitra</th>
-                <th>User</th>
-                <th>Old</th>
-                <th>New</th>
-                <th>Reason</th>
-                <th>At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($logs as $l)
-            <tr>
-                <td>{{ $l['id'] }}</td>
-                <td>@if($l['mitra']) ID: {{ $l['mitra']['id'] }} @endif</td>
-                <td>@if($l['user']) {{ $l['user']['name'] ?? $l['user']['id'] }} @endif</td>
-                <td>{{ $l['old_is_open'] ? 'Open' : 'Closed' }}</td>
-                <td>{{ $l['new_is_open'] ? 'Open' : 'Closed' }}</td>
-                <td>{{ $l['reason'] ?? '' }}</td>
-                <td>{{ $l['created_at'] }}</td>
-            </tr>
-            @empty
-            <tr><td colspan="7">No logs</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>ID</th><th>Mitra</th><th>User</th><th>Old</th><th>New</th><th>Reason</th><th>At</th></tr>
+    </x-slot>
+    @forelse($logs as $l)
+      <tr>
+        <td class="py-2">{{ $l['id'] }}</td>
+        <td class="py-2">@if($l['mitra']) ID: {{ $l['mitra']['id'] }} @endif</td>
+        <td class="py-2">@if($l['user']) {{ $l['user']['name'] ?? $l['user']['id'] }} @endif</td>
+        <td class="py-2">{{ $l['old_is_open'] ? 'Open' : 'Closed' }}</td>
+        <td class="py-2">{{ $l['new_is_open'] ? 'Open' : 'Closed' }}</td>
+        <td class="py-2">{{ $l['reason'] ?? '' }}</td>
+        <td class="py-2">{{ $l['created_at'] }}</td>
+      </tr>
+    @empty
+      <tr><td colspan="7" class="py-2">No logs</td></tr>
+    @endforelse
+  </x-admin.table>
 
     @if(isset($meta['last_page']))
         @php
@@ -70,5 +60,5 @@
         </nav>
     @endif
 
-</div>
+</x-admin.card>
 @endsection

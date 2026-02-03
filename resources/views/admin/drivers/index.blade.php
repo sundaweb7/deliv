@@ -1,24 +1,29 @@
 @extends('admin.layout')
 
+@section('page-title','Drivers')
+
 @section('content')
-<h1>Drivers</h1>
-@if(session('success'))<div style="color:green">{{ session('success') }}</div>@endif
-<table width="100%" border="0" cellpadding="8">
-  <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Online</th><th>Actions</th></tr></thead>
-  <tbody>
+<x-admin.card title="Drivers">
+  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
+
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>ID</th><th>Name</th><th>Email</th><th>Online</th><th>Actions</th></tr>
+    </x-slot>
     @foreach($drivers as $d)
-    <tr>
-      <td>{{ $d->id }}</td>
-      <td>{{ $d->user->name ?? '-' }}</td>
-      <td>{{ $d->user->email ?? '-' }}</td>
-      <td>{{ $d->is_online ? 'Online' : 'Offline' }}</td>
-      <td>
-        <form action="{{ route('admin.drivers.toggle', $d->id) }}" method="POST" style="display:inline">@csrf<button type="submit">Toggle</button></form>
-        <form action="{{ route('admin.drivers.destroy', $d->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete?')">@csrf @method('DELETE')<button type="submit">Delete</button></form>
-      </td>
-    </tr>
+      <tr>
+        <td class="py-2">{{ $d->id }}</td>
+        <td class="py-2">{{ $d->user->name ?? '-' }}</td>
+        <td class="py-2">{{ $d->user->email ?? '-' }}</td>
+        <td class="py-2">{{ $d->is_online ? 'Online' : 'Offline' }}</td>
+        <td class="py-2">
+          <form action="{{ route('admin.drivers.toggle', $d->id) }}" method="POST" style="display:inline">@csrf<button type="submit"><x-admin.button variant="muted">Toggle</x-admin.button></button></form>
+          <form action="{{ route('admin.drivers.destroy', $d->id) }}" method="POST" style="display:inline">@csrf @method('DELETE')<button type="submit" class="ml-2"><x-admin.button variant="danger">Delete</x-admin.button></button></form>
+        </td>
+      </tr>
     @endforeach
-  </tbody>
-</table>
-{{ $drivers->links() }}
+  </x-admin.table>
+
+  <x-admin.pagination :paginator="$drivers" />
+</x-admin.card>
 @endsection

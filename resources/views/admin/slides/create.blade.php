@@ -1,39 +1,34 @@
 @extends('admin.layout')
 
-@section('content')
-<div class="container">
-    <h1>Create Slide</h1>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+@section('page-title','Create Slide')
 
-    <form method="post" action="{{ route('admin.slides.store') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label>Image</label>
-            <input type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/gif,image/webp" id="imageInput">
-            <small class="form-text text-muted">Supported formats: PNG, JPEG, SVG, GIF, WEBP. Max 2MB.</small>
-            <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
-        </div>
-        <div class="form-group">
-            <label>Order</label>
-            <input type="number" name="order" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>Active</label>
-            <select name="is_active" class="form-control">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
-        <button class="btn btn-primary">Create</button>
-    </form>
+@section('content')
+<x-admin.card title="Create Slide">
+  @if ($errors->any())<div class="text-red-600 mb-3">@foreach($errors->all() as $err){{ $err }}<br>@endforeach</div>@endif
+
+  <form method="post" action="{{ route('admin.slides.store') }}" enctype="multipart/form-data" class="space-y-3">
+    @csrf
+    <div>
+      <label class="text-sm text-gray-600">Image</label>
+      <input type="file" name="image" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/gif,image/webp" id="imageInput" class="mt-1 block w-full">
+      <small class="text-sm text-gray-500">Supported formats: PNG, JPEG, SVG, GIF, WEBP. Max 2MB.</small>
+      <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600">Order</label>
+      <input type="number" name="order" class="mt-1 block w-full border rounded p-2">
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600">Active</label>
+      <select name="is_active" class="mt-1 block w-full border rounded p-2"><option value="1">Yes</option><option value="0">No</option></select>
+    </div>
+
+    <div class="flex justify-end">
+      <x-admin.button>Create</x-admin.button>
+    </div>
+  </form>
 
 @section('scripts')
 <script>
@@ -61,5 +56,5 @@ document.getElementById('imageInput').addEventListener('change', function(e){
 });
 </script>
 @endsection
-</div>
+</x-admin.card>
 @endsection

@@ -1,29 +1,32 @@
 @extends('admin.layout')
 
+@section('page-title', 'Withdrawal #' . $wd->id)
+
 @section('content')
-  <h3>Withdrawal #{{ $wd->id }}</h3>
-  @if(session('success')) <div style="color:green">{{ session('success') }}</div> @endif
-  @if(session('error')) <div style="color:red">{{ session('error') }}</div> @endif
-  <table>
-    <tr><th>Mitra</th><td>{{ $wd->mitra->business_name ?? $wd->mitra->user->name ?? 'Mitra #' . $wd->mitra_id }}</td></tr>
-    <tr><th>Amount</th><td>Rp {{ number_format($wd->amount,0,',','.') }}</td></tr>
-    <tr><th>Status</th><td>{{ $wd->status }}</td></tr>
-    <tr><th>Requested At</th><td>{{ $wd->created_at }}</td></tr>
-    <tr><th>Note</th><td>{{ $wd->note }}</td></tr>
-    <tr><th>Bank</th><td>{{ $wd->mitra->bank_name ?? '-' }} / {{ $wd->mitra->bank_account_name ?? '-' }} / {{ $wd->mitra->bank_account_number ?? '-' }}</td></tr>
+<x-admin.card :title="'Withdrawal #' . $wd->id">
+  @if(session('success')) <div class="text-green-600 mb-3">{{ session('success') }}</div> @endif
+  @if(session('error')) <div class="text-red-600 mb-3">{{ session('error') }}</div> @endif
+
+  <table class="w-full text-sm">
+    <tbody>
+      <tr class="border-t"><th class="text-left py-2 w-48">Mitra</th><td class="py-2">{{ $wd->mitra->business_name ?? $wd->mitra->user->name ?? 'Mitra #' . $wd->mitra_id }}</td></tr>
+      <tr class="border-t"><th class="text-left py-2">Amount</th><td class="py-2">Rp {{ number_format($wd->amount,0,',','.') }}</td></tr>
+      <tr class="border-t"><th class="text-left py-2">Status</th><td class="py-2">{{ $wd->status }}</td></tr>
+      <tr class="border-t"><th class="text-left py-2">Requested At</th><td class="py-2">{{ $wd->created_at }}</td></tr>
+      <tr class="border-t"><th class="text-left py-2">Note</th><td class="py-2">{{ $wd->note }}</td></tr>
+      <tr class="border-t"><th class="text-left py-2">Bank</th><td class="py-2">{{ $wd->mitra->bank_name ?? '-' }} / {{ $wd->mitra->bank_account_name ?? '-' }} / {{ $wd->mitra->bank_account_number ?? '-' }}</td></tr>
+    </tbody>
   </table>
 
-  <div style="margin-top:10px">
+  <div class="mt-4">
     @if($wd->status === 'pending')
-      <form method="post" action="{{ route('admin.mitra-withdrawals.approve', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit">Approve (Processing)</button></form>
-      <form method="post" action="{{ route('admin.mitra-withdrawals.complete', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit">Complete (Success)</button></form>
-      <form method="post" action="{{ route('admin.mitra-withdrawals.reject', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" onclick="return confirm('Reject and refund?')">Reject</button></form>
+      <form method="post" action="{{ route('admin.mitra-withdrawals.approve', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" class="mr-2"><x-admin.button variant="muted">Approve (Processing)</x-admin.button></button></form>
+      <form method="post" action="{{ route('admin.mitra-withdrawals.complete', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" class="mr-2"><x-admin.button variant="primary">Complete (Success)</x-admin.button></button></form>
+      <form method="post" action="{{ route('admin.mitra-withdrawals.reject', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" onclick="return confirm('Reject and refund?')"><x-admin.button variant="danger">Reject</x-admin.button></button></form>
     @elseif($wd->status === 'processing')
-      <form method="post" action="{{ route('admin.mitra-withdrawals.complete', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit">Complete (Success)</button></form>
-      <form method="post" action="{{ route('admin.mitra-withdrawals.reject', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" onclick="return confirm('Reject and refund?')">Reject</button></form>
-    @else
-      <!-- no actions -->
+      <form method="post" action="{{ route('admin.mitra-withdrawals.complete', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" class="mr-2"><x-admin.button variant="primary">Complete (Success)</x-admin.button></button></form>
+      <form method="post" action="{{ route('admin.mitra-withdrawals.reject', ['id' => $wd->id]) }}" style="display:inline">@csrf<button type="submit" onclick="return confirm('Reject and refund?')"><x-admin.button variant="danger">Reject</x-admin.button></button></form>
     @endif
   </div>
-
+</x-admin.card>
 @endsection

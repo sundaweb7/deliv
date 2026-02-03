@@ -1,28 +1,34 @@
 @extends('admin.layout')
 
+@section('page-title','Vouchers')
+
 @section('content')
-<h1>Vouchers</h1>
-<p><a href="{{ route('admin.vouchers.create') }}">Create Voucher</a></p>
-@if(session('success'))<div style="color:green">{{ session('success') }}</div>@endif
-<table width="100%" border="0" cellpadding="8">
-<thead><tr><th>ID</th><th>Code</th><th>Type</th><th>Value</th><th>Used</th><th>Active</th><th>Actions</th></tr></thead>
-<tbody>
-@foreach($vouchers as $v)
-<tr>
-  <td>{{ $v->id }}</td>
-  <td>{{ $v->code }}</td>
-  <td>{{ $v->type }}</td>
-  <td>{{ $v->value }}</td>
-  <td>{{ $v->used_count }} / {{ $v->usage_limit ?? '-' }}</td>
-  <td>{{ $v->is_active ? 'Yes' : 'No' }}</td>
-  <td>
-    <a href="{{ route('admin.vouchers.edit', $v->id) }}">Edit</a> |
-    <form method="POST" action="{{ route('admin.vouchers.toggle', $v->id) }}" style="display:inline">@csrf<button type="submit">Toggle</button></form> |
-    <form method="POST" action="{{ route('admin.vouchers.destroy', $v->id) }}" style="display:inline" onsubmit="return confirm('Delete?')">@csrf @method('DELETE')<button type="submit">Delete</button></form>
-  </td>
-</tr>
-@endforeach
-</tbody>
-</table>
-{{ $vouchers->links() }}
+<x-admin.card title="Vouchers">
+  @if(session('success'))<div class="text-green-600 mb-3">{{ session('success') }}</div>@endif
+  <div class="flex justify-end mb-4"><a href="{{ route('admin.vouchers.create') }}"><x-admin.button>Create Voucher</x-admin.button></a></div>
+
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>ID</th><th>Code</th><th>Type</th><th>Value</th><th>Used</th><th>Active</th><th>Actions</th></tr>
+    </x-slot>
+
+    @foreach($vouchers as $v)
+      <tr>
+        <td class="py-2">{{ $v->id }}</td>
+        <td class="py-2">{{ $v->code }}</td>
+        <td class="py-2">{{ $v->type }}</td>
+        <td class="py-2">{{ $v->value }}</td>
+        <td class="py-2">{{ $v->used_count }} / {{ $v->usage_limit ?? '-' }}</td>
+        <td class="py-2">{{ $v->is_active ? 'Yes' : 'No' }}</td>
+        <td class="py-2">
+          <a href="{{ route('admin.vouchers.edit', $v->id) }}"><x-admin.button variant="muted">Edit</x-admin.button></a>
+          <form method="POST" action="{{ route('admin.vouchers.toggle', $v->id) }}" style="display:inline">@csrf<button class="ml-2"><x-admin.button variant="muted">Toggle</x-admin.button></button></form>
+          <form method="POST" action="{{ route('admin.vouchers.destroy', $v->id) }}" style="display:inline">@csrf @method('DELETE')<button class="ml-2"><x-admin.button variant="danger">Delete</x-admin.button></button></form>
+        </td>
+      </tr>
+    @endforeach
+  </x-admin.table>
+
+  <x-admin.pagination :paginator="$vouchers" />
+</x-admin.card>
 @endsection

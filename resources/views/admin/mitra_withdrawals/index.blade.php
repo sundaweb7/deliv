@@ -1,25 +1,31 @@
 @extends('admin.layout')
 
+@section('page-title','Mitra Withdrawals')
+
 @section('content')
-  <h3>Mitra Withdrawals</h3>
-  <form method="get" style="margin-bottom:10px">
-    <label>Status: <select name="status"><option value="">All</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="success">Success</option><option value="failed">Failed</option></select></label>
-    <button type="submit">Filter</button>
+<x-admin.card title="Mitra Withdrawals">
+  <form method="get" class="mb-4 flex items-center gap-2">
+    <label class="text-sm text-gray-600">Status</label>
+    <select name="status" class="border rounded p-2 text-sm"><option value="">All</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="success">Success</option><option value="failed">Failed</option></select>
+    <button type="submit" class="ml-2"><x-admin.button variant="muted">Filter</x-admin.button></button>
   </form>
-  <table border="1" cellpadding="6" cellspacing="0" width="100%">
-    <thead><tr><th>ID</th><th>Mitra</th><th>Amount</th><th>Status</th><th>Requested At</th><th>Actions</th></tr></thead>
-    <tbody>
-      @foreach($withdrawals as $wd)
-        <tr>
-          <td>{{ $wd->id }}</td>
-          <td>{{ $wd->mitra->business_name ?? $wd->mitra->user->name ?? 'Mitra #' . $wd->mitra_id }}</td>
-          <td>Rp {{ number_format($wd->amount,0,',','.') }}</td>
-          <td>{{ $wd->status }}</td>
-          <td>{{ $wd->created_at }}</td>
-          <td><a href="{{ route('admin.mitra-withdrawals.show', ['id' => $wd->id]) }}">View</a></td>
-        </tr>
-      @endforeach
-    </tbody>
-  </table>
-  <div style="margin-top:10px">{{ $withdrawals->links() }}</div>
+
+  <x-admin.table>
+    <x-slot name="thead">
+      <tr><th>ID</th><th>Mitra</th><th>Amount</th><th>Status</th><th>Requested At</th><th>Actions</th></tr>
+    </x-slot>
+    @foreach($withdrawals as $wd)
+      <tr>
+        <td class="py-2">{{ $wd->id }}</td>
+        <td class="py-2">{{ $wd->mitra->business_name ?? $wd->mitra->user->name ?? 'Mitra #' . $wd->mitra_id }}</td>
+        <td class="py-2">Rp {{ number_format($wd->amount,0,',','.') }}</td>
+        <td class="py-2">{{ $wd->status }}</td>
+        <td class="py-2">{{ $wd->created_at }}</td>
+        <td class="py-2"><a href="{{ route('admin.mitra-withdrawals.show', ['id' => $wd->id]) }}"><x-admin.button variant="muted">View</x-admin.button></a></td>
+      </tr>
+    @endforeach
+  </x-admin.table>
+
+  <x-admin.pagination :paginator="$withdrawals" />
+</x-admin.card>
 @endsection
