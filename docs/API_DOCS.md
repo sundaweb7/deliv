@@ -25,6 +25,20 @@
 - GET /api/customer/mitras (authenticated & role:customer)
   - Response: { success, message, data: [mitras] }
 
+- GET /api/products (public)
+  - Query params:
+    - `q` (optional) — search by product `name`, `description`, `category` name, or `mitra` name
+    - `category` (slug)
+    - `mitra` (id)
+    - `page` (pagination page)
+    - `per_page` (items per page, default 20)
+    - `sort` (one of: `id`, `name`, `price`, `created_at`)
+    - `order` (`asc` or `desc`)
+  - Response: { success, message, data: [products], meta: { current_page, per_page, total, last_page } }
+
+- GET /api/customer/products (authenticated & role:customer)
+  - Same as `GET /api/products` but scoped for customer view (allows filtering by category or mitra)
+
 - POST /api/customer/cart/add
   - Body: { product_id, qty }
   - Response: { success, message, data: cart }

@@ -28,7 +28,34 @@ class OrderController extends Controller
         if ($request->has('mitra')) {
             $query->where('mitra_id', $request->mitra);
         }
-        return response()->json(['success' => true, 'message' => 'List products', 'data' => $query->get()]);
+        // search by q (product name/description, category name, mitra user name)
+        if ($request->has('q')) {
+            $term = $request->q;
+            $query->where(function($q) use ($term) {
+                $q->where('products.name', 'like', '%' . $term . '%')
+                  ->orWhere('products.description', 'like', '%' . $term . '%')
+                  ->orWhereHas('category', function($qq) use ($term) { $qq->where('name', 'like', '%' . $term . '%'); })
+                  ->orWhereHas('mitra.user', function($qq) use ($term) { $qq->where('name', 'like', '%' . $term . '%'); });
+            });
+        }
+
+        // sorting and pagination
+        $allowedSorts = ['id','name','price','created_at'];
+        $sort = $request->input('sort', 'id');
+        if (!in_array($sort, $allowedSorts)) $sort = 'id';
+        $order = strtolower($request->input('order', 'asc')) === 'desc' ? 'desc' : 'asc';
+        $perPage = max(1, (int) $request->input('per_page', 20));
+        $page = max(1, (int) $request->input('page', 1));
+
+        $paginated = $query->orderBy($sort, $order)->paginate($perPage, ['*'], 'page', $page);
+        $meta = [
+            'current_page' => $paginated->currentPage(),
+            'per_page' => $paginated->perPage(),
+            'total' => $paginated->total(),
+            'last_page' => $paginated->lastPage(),
+        ];
+
+        return response()->json(['success' => true, 'message' => 'List products', 'data' => $paginated->items(), 'meta' => $meta]);
     }
 
     public function homeProducts(Request $request)
