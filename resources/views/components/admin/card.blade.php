@@ -1,9 +1,11 @@
-<div {{ $attributes->merge(['class' => 'bg-white shadow rounded p-4']) }}>
+<div {{ $attributes->merge(['class' => 'card']) }}>
     @if(isset($title))
-        <div class="flex items-center justify-between mb-3">
-            <h3 class="font-semibold text-lg">{{ $title }}</h3>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ $title }}</h5>
             {{ $header ?? '' }}
         </div>
     @endif
-    {{ $slot }}
+    <div class="card-body">
+        {{ $slot }}
+    </div>
 </div>
