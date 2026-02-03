@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin - Deliv</title>
   @vite(['resources/css/app.css','resources/js/app.js'])
+  <!-- Fallback: load compiled CSS directly if Vite/manifest isn't available or not serving -->
+  <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-800">
   <div class="min-h-screen flex">
