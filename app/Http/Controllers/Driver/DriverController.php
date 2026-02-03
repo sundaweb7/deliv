@@ -43,11 +43,17 @@ class DriverController extends Controller
 
         // notify customer that driver accepted (if token exists)
         try {
-            $fcm = new \App\Services\FcmService();
+            $fcm = app(\App\Services\FcmService::class);
             $customerId = $ov->order->customer_id;
             $tokens = \App\Models\DeviceToken::where('user_id', $customerId)->pluck('token')->toArray();
             if (!empty($tokens)) {
                 $fcm->sendToTokens($tokens, 'Order on delivery', 'Your order is on delivery', ['order_id' => $ov->order->id]);
+            }
+
+            // also notify mitra that driver accepted
+            $mitraTokens = \App\Models\DeviceToken::where('user_id', $ov->mitra->user_id)->pluck('token')->toArray();
+            if (!empty($mitraTokens)) {
+                $fcm->sendToTokens($mitraTokens, 'Driver assigned', 'Driver accepted delivery for order #' . $ov->order->id, ['order_id' => $ov->order->id]);
             }
         } catch (\Throwable $e) {
             // ignore
@@ -68,6 +74,17 @@ class DriverController extends Controller
         $ov->save();
 
         $order = $ov->order;
+
+        // notify mitra and customer that vendor delivered
+        try {
+            $fcm = app(\App\Services\FcmService::class);
+            $mitraTokens = \App\Models\DeviceToken::where('user_id', $ov->mitra->user_id)->pluck('token')->toArray();
+            if (!empty($mitraTokens)) $fcm->sendToTokens($mitraTokens, 'Order delivered', 'Order vendor #' . $ov->id . ' delivered', ['order_id' => $ov->order->id]);
+
+            $custTokens = \App\Models\DeviceToken::where('user_id', $ov->order->customer_id)->pluck('token')->toArray();
+            if (!empty($custTokens)) $fcm->sendToTokens($custTokens, 'Order delivered', 'Your order #' . $ov->order->id . ' has been delivered', ['order_id' => $ov->order->id]);
+        } catch (\Throwable $e) {}
+
 
         // If payment method is bank_transfer and not paid yet, do NOT process payouts here
         if ($order->payment_method === 'bank_transfer' && $order->payment_status !== 'paid') {

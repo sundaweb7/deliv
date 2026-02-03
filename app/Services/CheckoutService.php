@@ -15,11 +15,14 @@ class CheckoutService
 {
     protected $user;
     protected $cart;
+    protected $fcm;
 
-    public function __construct($user)
+    public function __construct($user, $fcmService = null)
     {
         $this->user = $user;
         $this->cart = Cart::where('user_id', $user->id)->with('items.product.mitra')->first();
+        // resolve FCM service from container for easier testing/mocking
+        $this->fcm = $fcmService ?: app(\App\Services\FcmService::class);
     }
 
     protected function computeDistanceKm($lat1, $lng1, $lat2, $lng2)
@@ -158,10 +161,9 @@ class CheckoutService
 
                         // notify driver via FCM (if token exists)
                         try {
-                            $fcm = new \App\Services\FcmService();
                             $tokens = \App\Models\DeviceToken::where('user_id', $driver->user_id)->pluck('token')->toArray();
                             if (!empty($tokens)) {
-                                $fcm->sendToTokens($tokens, 'New delivery assigned', 'You have a new order to deliver (order_id: ' . $order->id . ')', ['order_id' => $order->id]);
+                                $this->fcm->sendToTokens($tokens, 'New delivery assigned', 'You have a new order to deliver (order_id: ' . $order->id . ')', ['order_id' => $order->id]);
                             }
                         } catch (\Throwable $e) {
                             // ignore notification failure for now
@@ -169,10 +171,9 @@ class CheckoutService
 
                         // notify mitra about new order
                         try {
-                            $fcm = new \App\Services\FcmService();
                             $mitraTokens = \App\Models\DeviceToken::where('user_id', $mitra->user_id)->pluck('token')->toArray();
                             if (!empty($mitraTokens)) {
-                                $fcm->sendToTokens($mitraTokens, 'New order received', 'You have a new order (order_id: ' . $order->id . ')', ['order_id' => $order->id]);
+                                $this->fcm->sendToTokens($mitraTokens, 'New order received', 'You have a new order (order_id: ' . $order->id . ')', ['order_id' => $order->id]);
                             }
                         } catch (\Throwable $e) {
                             // ignore
@@ -346,6 +347,25 @@ class CheckoutService
                 // bank_transfer: remains pending until admin confirms payment
                 $order->payment_status = 'pending';
                 $order->save();
+            }
+
+            // send FCM notifications to customer and each mitra about the created order
+            try {
+                // customer
+                $custTokens = \App\Models\DeviceToken::where('user_id', $this->user->id)->pluck('token')->toArray();
+                if (!empty($custTokens)) {
+                    $this->fcm->sendToTokens($custTokens, 'Order placed', 'Your order #' . $order->id . ' has been placed', ['order_id' => $order->id]);
+                }
+
+                // mitra
+                foreach ($orderVendorsCreated as $ov) {
+                    $mitraTokens = \App\Models\DeviceToken::where('user_id', $ov->mitra->user_id)->pluck('token')->toArray();
+                    if (!empty($mitraTokens)) {
+                        $this->fcm->sendToTokens($mitraTokens, 'New order received', 'Order #' . $order->id . ' has items for your store', ['order_id' => $order->id, 'order_vendor_id' => $ov->id]);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // ignore notification failures
             }
 
             // clear cart
