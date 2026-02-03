@@ -42,6 +42,13 @@ class ReportsController extends Controller
             $data['mitra_earnings'] = $paginator;
         }
 
+        // Normalize transactions array entries into objects for view convenience
+        if (isset($data['transactions']) && is_array($data['transactions'])) {
+            $data['transactions'] = array_map(function ($t) {
+                return is_array($t) ? (object) $t : $t;
+            }, $data['transactions']);
+        }
+
         return view('admin.reports.finance', ['data' => $data, 'from' => $request->from ?? null, 'to' => $request->to ?? null]);
     }
 }
