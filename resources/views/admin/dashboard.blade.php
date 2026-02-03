@@ -1,40 +1,36 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin Dashboard - Deliv</title>
-  <style>body{font-family:Arial,Helvetica,sans-serif;max-width:900px;margin:40px auto} .card{border:1px solid #ddd;padding:16px;margin-bottom:12px;border-radius:6px}</style>
-</head>
-<body>
-  <h1>Admin Dashboard</h1>
-  <p><a href="{{ route('admin.logout') }}">Logout</a></p>
+@extends('admin.layout')
 
-  <div class="card">
-    <h3>Users</h3>
-    <p>Total: {{ $data['users']['total'] ?? 0 }} — Customers: {{ $data['users']['customers'] ?? 0 }} — Mitras: {{ $data['users']['mitras'] ?? 0 }} — Drivers: {{ $data['users']['drivers'] ?? 0 }}</p>
-    <p><a href="{{ route('admin.users.index') }}">View users list</a></p>
+@section('page-title','Dashboard')
+
+@section('content')
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white shadow rounded p-4">
+      <div class="text-sm text-gray-500">Users</div>
+      <div class="text-2xl font-semibold">{{ \App\Models\User::count() }}</div>
+    </div>
+
+    <div class="bg-white shadow rounded p-4">
+      <div class="text-sm text-gray-500">Mitras</div>
+      <div class="text-2xl font-semibold">{{ \App\Models\Mitra::count() }}</div>
+    </div>
+
+    <div class="bg-white shadow rounded p-4">
+      <div class="text-sm text-gray-500">Withdrawals Pending</div>
+      <div class="text-2xl font-semibold">{{ \App\Models\MitraWithdrawal::where('status','pending')->count() }}</div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Orders</h3>
-    <p>Total: {{ $data['orders']['total'] ?? 0 }} — Pending: {{ $data['orders']['pending'] ?? 0 }}</p>
+  <div class="mt-6 bg-white shadow rounded p-4">
+    <h3 class="font-semibold mb-2">Recent Withdrawals</h3>
+    <table class="w-full text-left">
+      <thead class="text-sm text-gray-500">
+        <tr><th>ID</th><th>Mitra</th><th>Amount</th><th>Status</th><th>Requested At</th></tr>
+      </thead>
+      <tbody>
+        @foreach(\App\Models\MitraWithdrawal::with('mitra.user')->orderBy('created_at','desc')->limit(5)->get() as $wd)
+          <tr class="border-t"><td>{{ $wd->id }}</td><td>{{ $wd->mitra->business_name ?? $wd->mitra->user->name }}</td><td>Rp {{ number_format($wd->amount,0,',','.') }}</td><td>{{ $wd->status }}</td><td>{{ $wd->created_at }}</td></tr>
+        @endforeach
+      </tbody>
+    </table>
   </div>
-
-  <div class="card">
-    <h3>Finance</h3>
-    <p>Total Revenue: {{ number_format($data['finance']['total_revenue'] ?? 0, 0, ',', '.') }} — Admin Commission: {{ number_format($data['finance']['admin_commission'] ?? 0, 0, ',', '.') }}</p>
-  </div>
-
-  <div class="card">
-    <h3>Quick Links</h3>
-    <ul>
-      <li><a href="/admin/mitras">UI: Manage Mitras</a></li>
-      <li><a href="/admin/drivers">UI: Manage Drivers</a></li>
-      <li><a href="/admin/products">UI: Manage Products</a></li>
-      <li><a href="/api/admin/mitras">API: Manage Mitras</a> (use Postman)</li>
-      <li><a href="/api/admin/stats">API: Raw stats JSON</a></li>
-    </ul>
-  </div>
-</body>
-</html>
+@endsection
