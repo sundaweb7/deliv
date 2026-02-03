@@ -38,6 +38,13 @@ class MitraOrderController extends Controller
             // ignore
         }
 
+        // dispatch WhatsApp job to notify both customer and mitra about the status change/order
+        try {
+            \App\Jobs\SendOrderWhatsappNotification::dispatch($ov->order_id)->afterCommit();
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
         return response()->json(['success' => true, 'message' => 'Status updated', 'data' => $ov]);
     }
 }

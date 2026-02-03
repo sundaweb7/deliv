@@ -59,6 +59,13 @@ class DriverController extends Controller
             // ignore
         }
 
+        // dispatch WhatsApp notification job about driver status change/order progress
+        try {
+            \App\Jobs\SendOrderWhatsappNotification::dispatch($ov->order_id)->afterCommit();
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
         return response()->json(['success' => true, 'message' => 'Order accepted', 'data' => $route]);
     }
 
@@ -84,6 +91,13 @@ class DriverController extends Controller
             $custTokens = \App\Models\DeviceToken::where('user_id', $ov->order->customer_id)->pluck('token')->toArray();
             if (!empty($custTokens)) $fcm->sendToTokens($custTokens, 'Order delivered', 'Your order #' . $ov->order->id . ' has been delivered', ['order_id' => $ov->order->id]);
         } catch (\Throwable $e) {}
+
+        // dispatch WhatsApp notification job about delivery/completion
+        try {
+            \App\Jobs\SendOrderWhatsappNotification::dispatch($ov->order_id)->afterCommit();
+        } catch (\Throwable $e) {
+            // ignore
+        }
 
 
         // If payment method is bank_transfer and not paid yet, do NOT process payouts here

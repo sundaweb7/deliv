@@ -95,6 +95,13 @@ class AdminController extends Controller
             }
         }
 
+        // dispatch whatsapp job to notify customer & mitra about payment confirmed
+        try {
+            \App\Jobs\SendOrderWhatsappNotification::dispatch($order->id)->afterCommit();
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
         return response()->json(['success' => true, 'message' => 'Order marked as paid', 'data' => $order]);
     }
 }
