@@ -4,51 +4,53 @@
 
 @section('content')
 <x-admin.card :title="'Edit Product - ' . ($product->name ?? '')">
-  @if ($errors->any())<div class="text-red-600 mb-3">{{ implode(', ', $errors->all()) }}</div>@endif
-  <form method="post" action="{{ route('admin.products.update', ['product' => $product->id]) }}" enctype="multipart/form-data" class="space-y-3">
+  @if ($errors->any())
+    <div class="alert alert-danger mb-3">{{ implode(', ', $errors->all()) }}</div>
+  @endif
+  <form method="post" action="{{ route('admin.products.update', ['product' => $product->id]) }}" enctype="multipart/form-data">
     @csrf
     @method('put')
 
-    <div>
-      <label class="text-sm text-gray-600">Mitra</label>
-      <select name="mitra_id" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Mitra</label>
+      <select name="mitra_id" class="form-select form-select-sm">
         @foreach($mitras as $m)
           <option value="{{ $m->id }}" {{ $m->id == $product->mitra_id ? 'selected' : '' }}>{{ $m->user->name ?? 'Mitra ' . $m->id }}</option>
         @endforeach
       </select>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Name</label>
-      <input type="text" name="name" value="{{ $product->name }}" class="mt-1 block w-full border rounded p-2">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" name="name" value="{{ $product->name }}" class="form-control form-control-sm">
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Description</label>
-      <textarea name="description" class="mt-1 block w-full border rounded p-2">{{ $product->description }}</textarea>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control form-control-sm">{{ $product->description }}</textarea>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <div>
-        <label class="text-sm text-gray-600">Price</label>
-        <input type="number" name="price" value="{{ $product->price }}" class="mt-1 block w-full border rounded p-2">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Price</label>
+        <input type="number" name="price" value="{{ $product->price }}" class="form-control form-control-sm">
       </div>
-      <div>
-        <label class="text-sm text-gray-600">Stock</label>
-        <input type="number" name="stock" value="{{ $product->stock }}" class="mt-1 block w-full border rounded p-2">
+      <div class="col-md-6">
+        <label class="form-label">Stock</label>
+        <input type="number" name="stock" value="{{ $product->stock }}" class="form-control form-control-sm">
       </div>
     </div>
 
-    <div>
-      <label class="text-sm text-gray-600">Image</label>
-      @if($product->image) <div class="mb-2"><img id="currentImage" src="{{ $product->thumb_url }}" style="height:80px"></div> @endif
-      <input type="file" name="image" id="imageInput" class="mt-1 block w-full">
-      <small class="text-sm text-gray-500">Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
-      <div class="mt-2"><img id="imagePreview" src="#" style="max-height:120px; display:none"></div>
+    <div class="mb-3">
+      <label class="form-label">Image</label>
+      @if($product->image) <div class="mb-2"><img id="currentImage" src="{{ $product->thumb_url }}" class="img-thumbnail" style="height:80px"></div> @endif
+      <input type="file" name="image" id="imageInput" class="form-control form-control-sm">
+      <small class="form-text text-muted">Supported: PNG, JPEG, SVG, GIF, WEBP. Max 5MB.</small>
+      <div class="mt-2"><img id="imagePreview" src="#" class="img-fluid" style="display:none"></div>
     </div>
 
-    <div class="flex justify-end">
-      <x-admin.button>Update</x-admin.button>
+    <div class="d-flex justify-content-end">
+      <x-admin.button class="btn-primary">Update</x-admin.button>
     </div>
   </form>
 </x-admin.card>
